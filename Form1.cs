@@ -29,8 +29,9 @@ namespace ResistorInterpretor
             InitializeComponent();
             SetupRadioButtons();
             SetupListView();
-            SetupComboBoxes();
             PopulateUnitComboBox();
+            comboBox1.Visible = false;
+            comboBox2.Visible = false;
         }
 
         private void SetupRadioButtons()
@@ -50,12 +51,6 @@ namespace ResistorInterpretor
             listView1.HeaderStyle = ColumnHeaderStyle.None;
         }
 
-        private void SetupComboBoxes()
-        {
-            comboBox1.Visible = false;
-            comboBox2.Visible = false;
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             if (!double.TryParse(textBox1.Text, out double value) || value <= 0)
@@ -71,37 +66,34 @@ namespace ResistorInterpretor
             }
 
             int bandCount = GetBandCount();
-            int sigDigits = bandCount >= 5 ? 3 : 2;
+            int significantDigitCount = bandCount >= 5 ? 3 : 2;
 
-            // Notatie stiintifica, ex: 2.3 => "2.30E+00"
-            string sci = value.ToString("E" + (sigDigits - 1), CultureInfo.InvariantCulture);
-            string[] parts = sci.Split('E');
+             // Find the best representation with available multipliers
+            string significantDigits = "";
+            int multiplierIndex = -1;
 
-            string digitsOnly = new string(parts[0].Where(char.IsDigit).ToArray());
-            if (digitsOnly.Length < sigDigits)
-                digitsOnly = digitsOnly.PadRight(sigDigits, '0');
-
-            string sigPart = digitsOnly.Substring(0, sigDigits);
-            int exponent = int.Parse(parts[1]) - (sigDigits - 1);
-
-            int multiplierIndex = exponent switch
+            // Try different multipliers from Silver (-2) to highest (9)
+            for (int exponent = -2; exponent <= 9; exponent++)
             {
-                -2 => 11, // Silver
-                -1 => 10, // Gold
-                0 => 0,
-                1 => 1,
-                2 => 2,
-                3 => 3,
-                4 => 4,
-                5 => 5,
-                6 => 6,
-                7 => 7,
-                8 => 8,
-                9 => 9,
-                _ => -1
-            };
+                double testValue = value / Math.Pow(10, exponent);
+                int maxValue = (int)Math.Pow(10, significantDigitCount);
+                int rounded = (int)Math.Round(testValue);
 
-            if (multiplierIndex < 0 || multiplierIndex >= Colors.Length)
+                if (rounded >= 0 && rounded < maxValue)
+                {
+                    significantDigits = rounded.ToString().PadLeft(significantDigitCount, '0');
+                    multiplierIndex = exponent switch
+                    {
+                        -2 => 11, // Silver
+                        -1 => 10, // Gold
+                        >= 0 and <= 9 => exponent,
+                        _ => -1
+                    };
+                    break;
+                }
+            }
+
+            if (multiplierIndex >= Colors.Length)
             {
                 MessageBox.Show("Value out of range.");
                 return;
@@ -109,7 +101,7 @@ namespace ResistorInterpretor
 
             listView1.Items.Clear();
 
-            foreach (char c in sigPart)
+            foreach (char c in significantDigits)
                 AddBand(Colors[c - '0']);
 
             AddBand(Colors[multiplierIndex]);
