@@ -1,6 +1,6 @@
 ﻿namespace ResistorInterpretor
 {
-    partial class Form_
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -224,7 +224,7 @@
             // labelResult
             // 
             labelResult.AutoSize = true;
-            labelResult.Location = new Point(225, 31);
+            labelResult.Location = new Point(242, 31);
             labelResult.Name = "labelResult";
             labelResult.Size = new Size(39, 15);
             labelResult.TabIndex = 9;
@@ -302,13 +302,13 @@
             comboBoxBands.Size = new Size(121, 23);
             comboBoxBands.TabIndex = 1;
             // 
-            // Form_
+            // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(988, 646);
             Controls.Add(tabValueToColor);
-            Name = "Form_";
+            Name = "MainForm";
             Text = "Form1";
             tabValueToColor.ResumeLayout(false);
             tabPage1.ResumeLayout(false);

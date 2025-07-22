@@ -2,32 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ResistorInterpretor
+namespace ResistorInterpretor.Logic
 {
-    public static class ColorToValueConverter
+    public static class ColorConverterLogic
     {
         public const int defaultBandCount = 3;
 
         internal static readonly string[][] BandLabelTexts = new[]
         {
-            new[] { "1st band color", "2nd band color", "Multiplier" },                            
-            new[] { "1st band color", "2nd band color", "Multiplier", "Tolerance" },                
+            new[] { "1st band color", "2nd band color", "Multiplier" },
+            new[] { "1st band color", "2nd band color", "Multiplier", "Tolerance" },
             new[] { "1st band color", "2nd band color", "3rd band color", "Multiplier", "Tolerance" },
-            new[] { "1st band color", "2nd band color", "3rd band color", "Multiplier", "Tolerance", "Temp. Coefficient" } 
+            new[] { "1st band color", "2nd band color", "3rd band color", "Multiplier", "Tolerance", "Temp. Coefficient" }
         };
 
         public static string GetBandType(int bandIndex, int totalBands)
         {
-            if (bandIndex < totalBands - 2) return "digit"; 
+            if (bandIndex < totalBands - 2) return "digit";
             if (bandIndex == totalBands - 2) return "multiplier";
 
             if (bandIndex == totalBands - 1)
             {
-                if (totalBands == 6) return "temperatureCoefficient"; 
-                if (totalBands > 3) return "tolerance"; 
+                if (totalBands == 6) return "temperatureCoefficient";
+                if (totalBands > 3) return "tolerance";
             }
 
-            return "all"; 
+            return "all";
         }
 
         public static List<ResistorColorInfo> GetValidColors(string bandType)
@@ -55,12 +55,12 @@ namespace ResistorInterpretor
 
             if (colors.Count <= 4)
             {
-                value = (10 * colors[0].Digit.Value) + colors[1].Digit.Value;
+                value = 10 * colors[0].Digit.Value + colors[1].Digit.Value;
                 value *= Math.Pow(10, colors[colors.Count - 2].MultiplierExponent.Value);
             }
             else
             {
-                value = (100 * colors[0].Digit.Value) + (10 * colors[1].Digit.Value) + colors[2].Digit.Value;
+                value = 100 * colors[0].Digit.Value + 10 * colors[1].Digit.Value + colors[2].Digit.Value;
                 value *= Math.Pow(10, colors[colors.Count - 2].MultiplierExponent.Value);
             }
 

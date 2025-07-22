@@ -1,10 +1,11 @@
-﻿using ResistorInterpretor.Contracts;
+﻿using Microsoft.VisualBasic.Logging;
+using ResistorInterpretor.Contracts;
 
-namespace ResistorInterpretor;
+namespace ResistorInterpretor.Logic;
 
-public class ConverterLogic(IMainFormUI ui, IListManager listManager, IComboBoxManager comboBox1, IComboBoxManager comboBox2)
+public class ValueConverterLogic(IMainFormUI ui, IListManager listManager, IComboBoxManager comboBox1, IComboBoxManager comboBox2) : IValueConverterLogic
 {
-    public int PreviousBandCount { get; set; } = 3;
+    public int previousBandCount { get; set; } = 3;
 
     public void Convert()
     {
@@ -20,7 +21,7 @@ public class ConverterLogic(IMainFormUI ui, IListManager listManager, IComboBoxM
             case "MOhm": value *= 1_000_000; break;
         }
 
-        var bandCount = PreviousBandCount;
+        var bandCount = previousBandCount;
         var significantDigitCount = bandCount >= 5 ? 3 : 2;
 
         var significantDigits = "";
@@ -93,4 +94,16 @@ public class ConverterLogic(IMainFormUI ui, IListManager listManager, IComboBoxM
                 listManager.AddBand(colorInfo.Color, $"{colorName} ({colorInfo.TemperatureCoefficient}ppm/K)");
         }
     }
+
+    public void UpdateToleranceVisibility(int bandCount)
+    {
+        comboBox1.UpdateComboBoxVisibility(bandCount, previousBandCount, "tolerance");
+
+    }
+
+    public void UpdateTemperatureCoefficientVisibility(int bandCount)
+    {
+        comboBox2.UpdateComboBoxVisibility(bandCount, previousBandCount, "temperatureCoefficient");
+    }
+
 }
