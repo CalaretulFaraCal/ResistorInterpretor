@@ -1,6 +1,6 @@
 ﻿namespace ResistorInterpretor
 {
-    partial class ValueToColorConverter
+    partial class Form_
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,20 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textBox1 = new TextBox();
-            listView1 = new ListView();
+            inputValue = new TextBox();
+            listViewVTC = new ListView();
             button1 = new Button();
-            radioButton1 = new RadioButton();
-            radioButton2 = new RadioButton();
-            radioButton3 = new RadioButton();
-            radioButton4 = new RadioButton();
-            comboBox1 = new ComboBox();
-            comboBox2 = new ComboBox();
-            comboBox3 = new ComboBox();
+            radioButtonBands_3 = new RadioButton();
+            radioButtonBands_4 = new RadioButton();
+            radioButtonBands_5 = new RadioButton();
+            radioButtonBands_6 = new RadioButton();
+            comboBoxTolerance = new ComboBox();
+            comboBoxTempCoeff = new ComboBox();
+            comboBoxUnits = new ComboBox();
             tabValueToColor = new TabControl();
             tabPage1 = new TabPage();
-            label2 = new Label();
-            label1 = new Label();
+            labelTempCoeffVTC = new Label();
+            labelToleranceVTC = new Label();
             tabPage2 = new TabPage();
             labelResult = new Label();
             flowLayoutPanel7 = new FlowLayoutPanel();
@@ -51,27 +51,27 @@
             flowLayoutPanel2 = new FlowLayoutPanel();
             flowLayoutPanel3 = new FlowLayoutPanel();
             flowLayoutPanel1 = new FlowLayoutPanel();
-            comboBox4 = new ComboBox();
+            comboBoxBands = new ComboBox();
             tabValueToColor.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
-            // textBox1
+            // inputValue
             // 
-            textBox1.Location = new Point(94, 79);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(100, 23);
-            textBox1.TabIndex = 0;
+            inputValue.Location = new Point(94, 79);
+            inputValue.Name = "inputValue";
+            inputValue.Size = new Size(100, 23);
+            inputValue.TabIndex = 0;
             // 
-            // listView1
+            // listViewVTC
             // 
-            listView1.Location = new Point(573, 58);
-            listView1.Name = "listView1";
-            listView1.Size = new Size(197, 311);
-            listView1.TabIndex = 2;
-            listView1.UseCompatibleStateImageBehavior = false;
+            listViewVTC.Location = new Point(573, 58);
+            listViewVTC.Name = "listViewVTC";
+            listViewVTC.Size = new Size(197, 311);
+            listViewVTC.TabIndex = 2;
+            listViewVTC.UseCompatibleStateImageBehavior = false;
             // 
             // button1
             // 
@@ -83,73 +83,73 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
-            // radioButton1
+            // radioButtonBands_3
             // 
-            radioButton1.AutoSize = true;
-            radioButton1.Location = new Point(108, 132);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(66, 19);
-            radioButton1.TabIndex = 4;
-            radioButton1.TabStop = true;
-            radioButton1.Text = "3 bands";
-            radioButton1.UseVisualStyleBackColor = true;
+            radioButtonBands_3.AutoSize = true;
+            radioButtonBands_3.Location = new Point(108, 132);
+            radioButtonBands_3.Name = "radioButtonBands_3";
+            radioButtonBands_3.Size = new Size(66, 19);
+            radioButtonBands_3.TabIndex = 4;
+            radioButtonBands_3.TabStop = true;
+            radioButtonBands_3.Text = "3 bands";
+            radioButtonBands_3.UseVisualStyleBackColor = true;
             // 
-            // radioButton2
+            // radioButtonBands_4
             // 
-            radioButton2.AutoSize = true;
-            radioButton2.Location = new Point(108, 157);
-            radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(66, 19);
-            radioButton2.TabIndex = 5;
-            radioButton2.TabStop = true;
-            radioButton2.Text = "4 bands";
-            radioButton2.UseVisualStyleBackColor = true;
+            radioButtonBands_4.AutoSize = true;
+            radioButtonBands_4.Location = new Point(108, 157);
+            radioButtonBands_4.Name = "radioButtonBands_4";
+            radioButtonBands_4.Size = new Size(66, 19);
+            radioButtonBands_4.TabIndex = 5;
+            radioButtonBands_4.TabStop = true;
+            radioButtonBands_4.Text = "4 bands";
+            radioButtonBands_4.UseVisualStyleBackColor = true;
             // 
-            // radioButton3
+            // radioButtonBands_5
             // 
-            radioButton3.AutoSize = true;
-            radioButton3.Location = new Point(108, 182);
-            radioButton3.Name = "radioButton3";
-            radioButton3.Size = new Size(66, 19);
-            radioButton3.TabIndex = 6;
-            radioButton3.TabStop = true;
-            radioButton3.Text = "5 bands";
-            radioButton3.UseVisualStyleBackColor = true;
+            radioButtonBands_5.AutoSize = true;
+            radioButtonBands_5.Location = new Point(108, 182);
+            radioButtonBands_5.Name = "radioButtonBands_5";
+            radioButtonBands_5.Size = new Size(66, 19);
+            radioButtonBands_5.TabIndex = 6;
+            radioButtonBands_5.TabStop = true;
+            radioButtonBands_5.Text = "5 bands";
+            radioButtonBands_5.UseVisualStyleBackColor = true;
             // 
-            // radioButton4
+            // radioButtonBands_6
             // 
-            radioButton4.AutoSize = true;
-            radioButton4.Location = new Point(108, 207);
-            radioButton4.Name = "radioButton4";
-            radioButton4.Size = new Size(66, 19);
-            radioButton4.TabIndex = 7;
-            radioButton4.TabStop = true;
-            radioButton4.Text = "6 bands";
-            radioButton4.UseVisualStyleBackColor = true;
+            radioButtonBands_6.AutoSize = true;
+            radioButtonBands_6.Location = new Point(108, 207);
+            radioButtonBands_6.Name = "radioButtonBands_6";
+            radioButtonBands_6.Size = new Size(66, 19);
+            radioButtonBands_6.TabIndex = 7;
+            radioButtonBands_6.TabStop = true;
+            radioButtonBands_6.Text = "6 bands";
+            radioButtonBands_6.UseVisualStyleBackColor = true;
             // 
-            // comboBox1
+            // comboBoxTolerance
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(200, 132);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(123, 23);
-            comboBox1.TabIndex = 8;
+            comboBoxTolerance.FormattingEnabled = true;
+            comboBoxTolerance.Location = new Point(200, 132);
+            comboBoxTolerance.Name = "comboBoxTolerance";
+            comboBoxTolerance.Size = new Size(123, 23);
+            comboBoxTolerance.TabIndex = 8;
             // 
-            // comboBox2
+            // comboBoxTempCoeff
             // 
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(329, 132);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(135, 23);
-            comboBox2.TabIndex = 9;
+            comboBoxTempCoeff.FormattingEnabled = true;
+            comboBoxTempCoeff.Location = new Point(329, 132);
+            comboBoxTempCoeff.Name = "comboBoxTempCoeff";
+            comboBoxTempCoeff.Size = new Size(135, 23);
+            comboBoxTempCoeff.TabIndex = 9;
             // 
-            // comboBox3
+            // comboBoxUnits
             // 
-            comboBox3.FormattingEnabled = true;
-            comboBox3.Location = new Point(200, 80);
-            comboBox3.Name = "comboBox3";
-            comboBox3.Size = new Size(72, 23);
-            comboBox3.TabIndex = 10;
+            comboBoxUnits.FormattingEnabled = true;
+            comboBoxUnits.Location = new Point(200, 80);
+            comboBoxUnits.Name = "comboBoxUnits";
+            comboBoxUnits.Size = new Size(72, 23);
+            comboBoxUnits.TabIndex = 10;
             // 
             // tabValueToColor
             // 
@@ -165,18 +165,18 @@
             // 
             // tabPage1
             // 
-            tabPage1.Controls.Add(label2);
-            tabPage1.Controls.Add(label1);
-            tabPage1.Controls.Add(textBox1);
-            tabPage1.Controls.Add(comboBox3);
-            tabPage1.Controls.Add(listView1);
-            tabPage1.Controls.Add(comboBox2);
+            tabPage1.Controls.Add(labelTempCoeffVTC);
+            tabPage1.Controls.Add(labelToleranceVTC);
+            tabPage1.Controls.Add(inputValue);
+            tabPage1.Controls.Add(comboBoxUnits);
+            tabPage1.Controls.Add(listViewVTC);
+            tabPage1.Controls.Add(comboBoxTempCoeff);
             tabPage1.Controls.Add(button1);
-            tabPage1.Controls.Add(comboBox1);
-            tabPage1.Controls.Add(radioButton1);
-            tabPage1.Controls.Add(radioButton4);
-            tabPage1.Controls.Add(radioButton2);
-            tabPage1.Controls.Add(radioButton3);
+            tabPage1.Controls.Add(comboBoxTolerance);
+            tabPage1.Controls.Add(radioButtonBands_3);
+            tabPage1.Controls.Add(radioButtonBands_6);
+            tabPage1.Controls.Add(radioButtonBands_4);
+            tabPage1.Controls.Add(radioButtonBands_5);
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
@@ -185,23 +185,23 @@
             tabPage1.Text = "Value to Color";
             tabPage1.UseVisualStyleBackColor = true;
             // 
-            // label2
+            // labelTempCoeffVTC
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(329, 114);
-            label2.Name = "label2";
-            label2.Size = new Size(135, 15);
-            label2.TabIndex = 12;
-            label2.Text = "Temperature Coefficient";
+            labelTempCoeffVTC.AutoSize = true;
+            labelTempCoeffVTC.Location = new Point(329, 114);
+            labelTempCoeffVTC.Name = "labelTempCoeffVTC";
+            labelTempCoeffVTC.Size = new Size(135, 15);
+            labelTempCoeffVTC.TabIndex = 12;
+            labelTempCoeffVTC.Text = "Temperature Coefficient";
             // 
-            // label1
+            // labelToleranceVTC
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(236, 114);
-            label1.Name = "label1";
-            label1.Size = new Size(58, 15);
-            label1.TabIndex = 11;
-            label1.Text = "Tolerance";
+            labelToleranceVTC.AutoSize = true;
+            labelToleranceVTC.Location = new Point(236, 114);
+            labelToleranceVTC.Name = "labelToleranceVTC";
+            labelToleranceVTC.Size = new Size(58, 15);
+            labelToleranceVTC.TabIndex = 11;
+            labelToleranceVTC.Text = "Tolerance";
             // 
             // tabPage2
             // 
@@ -212,7 +212,7 @@
             tabPage2.Controls.Add(flowLayoutPanel4);
             tabPage2.Controls.Add(flowLayoutPanel2);
             tabPage2.Controls.Add(flowLayoutPanel1);
-            tabPage2.Controls.Add(comboBox4);
+            tabPage2.Controls.Add(comboBoxBands);
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
@@ -294,21 +294,21 @@
             flowLayoutPanel1.Size = new Size(886, 47);
             flowLayoutPanel1.TabIndex = 3;
             // 
-            // comboBox4
+            // comboBoxBands
             // 
-            comboBox4.FormattingEnabled = true;
-            comboBox4.Location = new Point(35, 28);
-            comboBox4.Name = "comboBox4";
-            comboBox4.Size = new Size(121, 23);
-            comboBox4.TabIndex = 1;
+            comboBoxBands.FormattingEnabled = true;
+            comboBoxBands.Location = new Point(35, 28);
+            comboBoxBands.Name = "comboBoxBands";
+            comboBoxBands.Size = new Size(121, 23);
+            comboBoxBands.TabIndex = 1;
             // 
-            // ValueToColorConverter
+            // Form_
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(988, 646);
             Controls.Add(tabValueToColor);
-            Name = "ValueToColorConverter";
+            Name = "Form_";
             Text = "Form1";
             tabValueToColor.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
@@ -322,22 +322,22 @@
 
         #endregion
 
-        private TextBox textBox1;
-        internal ListView listView1;
+        private TextBox inputValue;
+        internal ListView listViewVTC;
         private Button button1;
-        private RadioButton radioButton1;
-        private RadioButton radioButton2;
-        private RadioButton radioButton3;
-        private RadioButton radioButton4;
-        private ComboBox comboBox1;
-        private ComboBox comboBox2;
-        private ComboBox comboBox3;
+        private RadioButton radioButtonBands_3;
+        private RadioButton radioButtonBands_4;
+        private RadioButton radioButtonBands_5;
+        private RadioButton radioButtonBands_6;
+        private ComboBox comboBoxTolerance;
+        private ComboBox comboBoxTempCoeff;
+        private ComboBox comboBoxUnits;
         private TabControl tabValueToColor;
         private TabPage tabPage1;
         private TabPage tabPage2;
-        private ComboBox comboBox4;
-        private Label label2;
-        private Label label1;
+        private ComboBox comboBoxBands;
+        private Label labelTempCoeffVTC;
+        private Label labelToleranceVTC;
         private FlowLayoutPanel flowLayoutPanel1;
         private Label labelResult;
         private FlowLayoutPanel flowLayoutPanel7;
