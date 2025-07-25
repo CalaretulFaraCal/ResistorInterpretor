@@ -8,7 +8,9 @@ namespace ResistorInterpretor.Contracts
 {
     public interface IRadioButtonManager
     {
+        event EventHandler? BandCountChanged;
         int GetValue();
         int UpdateBandCount();
+
     }
 }

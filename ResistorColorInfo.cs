@@ -8,7 +8,7 @@ namespace ResistorInterpretor
 {
     public class ResistorColorInfo
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public Color Color { get; set; }
         public int? Digit { get; set; }
         public int? MultiplierExponent { get; set; }

@@ -1,76 +1,81 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using ResistorInterpretor.Contracts;
 
 namespace ResistorInterpretor.Logic
 {
-    public static class ColorConverterLogic
+    public class ColorConverterLogic(ComboBox bandSelector, IComboBoxManager[] colorManagers, Label resultLabel) : IColorConverterLogic
     {
-        public const int defaultBandCount = 3;
-
-        internal static readonly string[][] BandLabelTexts = new[]
+        public void Convert()
         {
-            new[] { "1st band color", "2nd band color", "Multiplier" },
-            new[] { "1st band color", "2nd band color", "Multiplier", "Tolerance" },
-            new[] { "1st band color", "2nd band color", "3rd band color", "Multiplier", "Tolerance" },
-            new[] { "1st band color", "2nd band color", "3rd band color", "Multiplier", "Tolerance", "Temp. Coefficient" }
-        };
+            int bandCount = bandSelector.SelectedIndex + 3;
 
-        public static string GetBandType(int bandIndex, int totalBands)
-        {
-            if (bandIndex < totalBands - 2) return "digit";
-            if (bandIndex == totalBands - 2) return "multiplier";
-
-            if (bandIndex == totalBands - 1)
+            var propertyTypes = new[]
             {
-                if (totalBands == 6) return "temperatureCoefficient";
-                if (totalBands > 3) return "tolerance";
+                "comboBox1", "comboBox2", "comboBox3",
+                "comboBox4", "comboBox5", "comboBox6"
+            };
+
+            var selectedColors = new string[colorManagers.Length];
+            for (int i = 0; i < colorManagers.Length; i++)
+            {
+                selectedColors[i] = colorManagers[i].GetSelectedColor(propertyTypes[i], "Black");
             }
 
-            return "all";
+            var colors = selectedColors
+                .Select(name => ResistorColorInfo.AllColors.FirstOrDefault(c => c.Name == name))
+                .ToArray();
+
+            int digits = 0;
+            double multiplier = 1;
+            double? tolerance = null;
+            int? tempCoeff = null;
+
+            if (bandCount == 3 || bandCount == 4)
+            {
+                digits = (colors[0]?.Digit ?? 0) * 10 + (colors[1]?.Digit ?? 0);
+                multiplier = Math.Pow(10, colors[2]?.MultiplierExponent ?? 0);
+                if (bandCount == 4)
+                    tolerance = colors[3]?.Tolerance;
+            }
+            else if (bandCount == 5 || bandCount == 6)
+            {
+                digits = (colors[0]?.Digit ?? 0) * 100 +
+                         (colors[1]?.Digit ?? 0) * 10 +
+                         (colors[2]?.Digit ?? 0);
+                multiplier = Math.Pow(10, colors[3]?.MultiplierExponent ?? 0);
+                tolerance = colors[4]?.Tolerance;
+                if (bandCount == 6)
+                    tempCoeff = colors[5]?.TemperatureCoefficient;
+            }
+
+            double value = digits * multiplier;
+            string result = FormatResult(value, tolerance, tempCoeff);
+            resultLabel.Text = "Resistance: " + result;
         }
 
-        public static List<ResistorColorInfo> GetValidColors(string bandType)
+        private string FormatWithSuffix(double value)
         {
-            return ResistorColorInfo.AllColors.Where(c =>
-            {
-                if (bandType == "digit") return c.Digit.HasValue;
-                if (bandType == "multiplier") return c.MultiplierExponent.HasValue;
-                if (bandType == "tolerance") return c.Tolerance.HasValue;
-                if (bandType == "temperatureCoefficient") return c.TemperatureCoefficient.HasValue;
-                return true;
-            }).ToList();
+            if (value >= 1_000_000)
+                return $"{value / 1_000_000:0.##}M";
+            if (value >= 1_000)
+                return $"{value / 1_000:0.##}k";
+            return value.ToString();
         }
 
-
-        public static double ConvertToValue(List<ResistorColorInfo> colors, string unit = "Ohm")
+        private string FormatResult(double value, double? tolerance, int? tempCoeff)
         {
-            if (colors == null || colors.Count < 3)
-                throw new ArgumentException("Minimum 3 bands required");
-
-            if (!colors[colors.Count - 2].MultiplierExponent.HasValue)
-                throw new ArgumentException("Multiplier band must have a valid multiplier value");
-
-            double value;
-
-            if (colors.Count <= 4)
-            {
-                value = 10 * colors[0].Digit.Value + colors[1].Digit.Value;
-                value *= Math.Pow(10, colors[colors.Count - 2].MultiplierExponent.Value);
-            }
-            else
-            {
-                value = 100 * colors[0].Digit.Value + 10 * colors[1].Digit.Value + colors[2].Digit.Value;
-                value *= Math.Pow(10, colors[colors.Count - 2].MultiplierExponent.Value);
-            }
-
-            switch (unit)
-            {
-                case "kOhm": return value / 1_000;
-                case "MOhm": return value / 1_000_000;
-                default: return value;
-            }
+            var result = FormatWithSuffix(value);
+            if (tolerance.HasValue)
+                result += $" ±{tolerance.Value}%";
+            if (tempCoeff.HasValue)
+                result += $" {tempCoeff.Value}ppm/K";
+            return result;
         }
 
+        public void UpdateBandComboBoxVisibility(int bandCount, int previousBandCount, IComboBoxManager[] comboBox)
+        {
+            comboBox[2].UpdateComboBoxVisibility(bandCount, previousBandCount, "comboBox3");
+            comboBox[4].UpdateComboBoxVisibility(bandCount, previousBandCount, "comboBox5");
+            comboBox[5].UpdateComboBoxVisibility(bandCount, previousBandCount, "comboBox6");
+        }
     }
 }

@@ -1,10 +1,4 @@
-﻿using Microsoft.VisualBasic.Logging;
-using ResistorInterpretor.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ResistorInterpretor.Contracts;
 
 namespace ResistorInterpretor.Services
 {
@@ -15,21 +9,30 @@ namespace ResistorInterpretor.Services
         private readonly RadioButton rb3;
         private readonly RadioButton rb4;
         private readonly IValueConverterLogic logic;
-        private readonly IComboBoxManager comboBoxManageTolerance;
-        private readonly IComboBoxManager comboBoxManageTempCoeff;
 
-        public RadioButtonManager(RadioButton rb1, RadioButton rb2, RadioButton rb3, RadioButton rb4, IValueConverterLogic logic, IComboBoxManager comboBoxManageTolerance, IComboBoxManager comboBoxManageTempCoeff)
+        public event EventHandler? BandCountChanged;
+
+        public RadioButtonManager(RadioButton rb1, RadioButton rb2, RadioButton rb3, RadioButton rb4, IValueConverterLogic logic)
         {
             this.rb1 = rb1;
             this.rb2 = rb2;
             this.rb3 = rb3;
             this.rb4 = rb4;
             this.logic = logic;
-            this.comboBoxManageTolerance = comboBoxManageTolerance;
-            this.comboBoxManageTempCoeff = comboBoxManageTempCoeff;
 
             rb1.Checked = true;
+
+            rb1.CheckedChanged += OnBandCountChanged;
+            rb2.CheckedChanged += OnBandCountChanged;
+            rb3.CheckedChanged += OnBandCountChanged;
+            rb4.CheckedChanged += OnBandCountChanged;
         }
+
+        private void OnBandCountChanged(object? sender, EventArgs e)
+        {
+            BandCountChanged?.Invoke(this, e);
+        }
+
         public int GetValue()
         {
             var buttons = new[] { rb1, rb2, rb3, rb4 };

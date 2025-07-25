@@ -40,22 +40,27 @@
             comboBoxUnits = new ComboBox();
             tabValueToColor = new TabControl();
             tabPage1 = new TabPage();
-            labelTempCoeffVTC = new Label();
-            labelToleranceVTC = new Label();
+            TemperatureCoefficient = new Label();
+            Tolerance = new Label();
             tabPage2 = new TabPage();
+            button2 = new Button();
+            comboBox6 = new ComboBox();
+            comboBox5 = new ComboBox();
+            comboBox4 = new ComboBox();
+            comboBox3 = new ComboBox();
+            comboBox2 = new ComboBox();
+            comboBox1 = new ComboBox();
+            label6 = new Label();
+            label5 = new Label();
+            label4 = new Label();
+            label3 = new Label();
+            label2 = new Label();
+            label1 = new Label();
             labelResult = new Label();
-            flowLayoutPanel7 = new FlowLayoutPanel();
-            flowLayoutPanel6 = new FlowLayoutPanel();
-            flowLayoutPanel5 = new FlowLayoutPanel();
-            flowLayoutPanel4 = new FlowLayoutPanel();
-            flowLayoutPanel2 = new FlowLayoutPanel();
-            flowLayoutPanel3 = new FlowLayoutPanel();
-            flowLayoutPanel1 = new FlowLayoutPanel();
             comboBoxBands = new ComboBox();
             tabValueToColor.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
-            flowLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
             // inputValue
@@ -165,8 +170,8 @@
             // 
             // tabPage1
             // 
-            tabPage1.Controls.Add(labelTempCoeffVTC);
-            tabPage1.Controls.Add(labelToleranceVTC);
+            tabPage1.Controls.Add(TemperatureCoefficient);
+            tabPage1.Controls.Add(Tolerance);
             tabPage1.Controls.Add(inputValue);
             tabPage1.Controls.Add(comboBoxUnits);
             tabPage1.Controls.Add(listViewVTC);
@@ -185,33 +190,40 @@
             tabPage1.Text = "Value to Color";
             tabPage1.UseVisualStyleBackColor = true;
             // 
-            // labelTempCoeffVTC
+            // TemperatureCoefficient
             // 
-            labelTempCoeffVTC.AutoSize = true;
-            labelTempCoeffVTC.Location = new Point(329, 114);
-            labelTempCoeffVTC.Name = "labelTempCoeffVTC";
-            labelTempCoeffVTC.Size = new Size(135, 15);
-            labelTempCoeffVTC.TabIndex = 12;
-            labelTempCoeffVTC.Text = "Temperature Coefficient";
+            TemperatureCoefficient.AutoSize = true;
+            TemperatureCoefficient.Location = new Point(329, 114);
+            TemperatureCoefficient.Name = "TemperatureCoefficient";
+            TemperatureCoefficient.Size = new Size(135, 15);
+            TemperatureCoefficient.TabIndex = 12;
+            TemperatureCoefficient.Text = "Temperature Coefficient";
             // 
-            // labelToleranceVTC
+            // Tolerance
             // 
-            labelToleranceVTC.AutoSize = true;
-            labelToleranceVTC.Location = new Point(236, 114);
-            labelToleranceVTC.Name = "labelToleranceVTC";
-            labelToleranceVTC.Size = new Size(58, 15);
-            labelToleranceVTC.TabIndex = 11;
-            labelToleranceVTC.Text = "Tolerance";
+            Tolerance.AutoSize = true;
+            Tolerance.Location = new Point(236, 114);
+            Tolerance.Name = "Tolerance";
+            Tolerance.Size = new Size(58, 15);
+            Tolerance.TabIndex = 11;
+            Tolerance.Text = "Tolerance";
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(button2);
+            tabPage2.Controls.Add(comboBox6);
+            tabPage2.Controls.Add(comboBox5);
+            tabPage2.Controls.Add(comboBox4);
+            tabPage2.Controls.Add(comboBox3);
+            tabPage2.Controls.Add(comboBox2);
+            tabPage2.Controls.Add(comboBox1);
+            tabPage2.Controls.Add(label6);
+            tabPage2.Controls.Add(label5);
+            tabPage2.Controls.Add(label4);
+            tabPage2.Controls.Add(label3);
+            tabPage2.Controls.Add(label2);
+            tabPage2.Controls.Add(label1);
             tabPage2.Controls.Add(labelResult);
-            tabPage2.Controls.Add(flowLayoutPanel7);
-            tabPage2.Controls.Add(flowLayoutPanel6);
-            tabPage2.Controls.Add(flowLayoutPanel5);
-            tabPage2.Controls.Add(flowLayoutPanel4);
-            tabPage2.Controls.Add(flowLayoutPanel2);
-            tabPage2.Controls.Add(flowLayoutPanel1);
             tabPage2.Controls.Add(comboBoxBands);
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
@@ -221,78 +233,126 @@
             tabPage2.Text = "Color to Value";
             tabPage2.UseVisualStyleBackColor = true;
             // 
+            // button2
+            // 
+            button2.Location = new Point(192, 28);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 22;
+            button2.Text = "Calculeaza";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // comboBox6
+            // 
+            comboBox6.FormattingEnabled = true;
+            comboBox6.Location = new Point(782, 109);
+            comboBox6.Name = "comboBox6";
+            comboBox6.Size = new Size(121, 23);
+            comboBox6.TabIndex = 21;
+            // 
+            // comboBox5
+            // 
+            comboBox5.FormattingEnabled = true;
+            comboBox5.Location = new Point(603, 109);
+            comboBox5.Name = "comboBox5";
+            comboBox5.Size = new Size(121, 23);
+            comboBox5.TabIndex = 20;
+            // 
+            // comboBox4
+            // 
+            comboBox4.FormattingEnabled = true;
+            comboBox4.Location = new Point(454, 109);
+            comboBox4.Name = "comboBox4";
+            comboBox4.Size = new Size(121, 23);
+            comboBox4.TabIndex = 19;
+            // 
+            // comboBox3
+            // 
+            comboBox3.FormattingEnabled = true;
+            comboBox3.Location = new Point(309, 109);
+            comboBox3.Name = "comboBox3";
+            comboBox3.Size = new Size(121, 23);
+            comboBox3.TabIndex = 18;
+            // 
+            // comboBox2
+            // 
+            comboBox2.FormattingEnabled = true;
+            comboBox2.Location = new Point(172, 109);
+            comboBox2.Name = "comboBox2";
+            comboBox2.Size = new Size(121, 23);
+            comboBox2.TabIndex = 17;
+            // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(35, 109);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(121, 23);
+            comboBox1.TabIndex = 16;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(758, 80);
+            label6.Name = "label6";
+            label6.Size = new Size(167, 15);
+            label6.TabIndex = 15;
+            label6.Text = "Temperature Coefficient Color";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(617, 80);
+            label5.Name = "label5";
+            label5.Size = new Size(90, 15);
+            label5.TabIndex = 14;
+            label5.Text = "Tolerance Color";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(468, 80);
+            label4.Name = "label4";
+            label4.Size = new Size(90, 15);
+            label4.TabIndex = 13;
+            label4.Text = "Multiplier Color";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(327, 80);
+            label3.Name = "label3";
+            label3.Size = new Size(86, 15);
+            label3.TabIndex = 12;
+            label3.Text = "3rd Band Color";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(192, 80);
+            label2.Name = "label2";
+            label2.Size = new Size(89, 15);
+            label2.TabIndex = 11;
+            label2.Text = "2nd Band Color";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(52, 80);
+            label1.Name = "label1";
+            label1.Size = new Size(84, 15);
+            label1.TabIndex = 10;
+            label1.Text = "1st Band Color";
+            // 
             // labelResult
             // 
             labelResult.AutoSize = true;
-            labelResult.Location = new Point(242, 31);
+            labelResult.Location = new Point(309, 28);
             labelResult.Name = "labelResult";
             labelResult.Size = new Size(39, 15);
             labelResult.TabIndex = 9;
             labelResult.Text = "Result";
-            // 
-            // flowLayoutPanel7
-            // 
-            flowLayoutPanel7.AutoScroll = true;
-            flowLayoutPanel7.AutoSize = true;
-            flowLayoutPanel7.Location = new Point(20, 527);
-            flowLayoutPanel7.Name = "flowLayoutPanel7";
-            flowLayoutPanel7.Size = new Size(886, 47);
-            flowLayoutPanel7.TabIndex = 8;
-            // 
-            // flowLayoutPanel6
-            // 
-            flowLayoutPanel6.AutoScroll = true;
-            flowLayoutPanel6.AutoSize = true;
-            flowLayoutPanel6.Location = new Point(20, 445);
-            flowLayoutPanel6.Name = "flowLayoutPanel6";
-            flowLayoutPanel6.Size = new Size(886, 47);
-            flowLayoutPanel6.TabIndex = 7;
-            // 
-            // flowLayoutPanel5
-            // 
-            flowLayoutPanel5.AutoScroll = true;
-            flowLayoutPanel5.AutoSize = true;
-            flowLayoutPanel5.Location = new Point(20, 353);
-            flowLayoutPanel5.Name = "flowLayoutPanel5";
-            flowLayoutPanel5.Size = new Size(886, 47);
-            flowLayoutPanel5.TabIndex = 6;
-            // 
-            // flowLayoutPanel4
-            // 
-            flowLayoutPanel4.AutoScroll = true;
-            flowLayoutPanel4.AutoSize = true;
-            flowLayoutPanel4.Location = new Point(20, 259);
-            flowLayoutPanel4.Name = "flowLayoutPanel4";
-            flowLayoutPanel4.Size = new Size(886, 47);
-            flowLayoutPanel4.TabIndex = 5;
-            // 
-            // flowLayoutPanel2
-            // 
-            flowLayoutPanel2.AutoScroll = true;
-            flowLayoutPanel2.AutoSize = true;
-            flowLayoutPanel2.Controls.Add(flowLayoutPanel3);
-            flowLayoutPanel2.Location = new Point(20, 177);
-            flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Size = new Size(886, 47);
-            flowLayoutPanel2.TabIndex = 4;
-            // 
-            // flowLayoutPanel3
-            // 
-            flowLayoutPanel3.AutoScroll = true;
-            flowLayoutPanel3.AutoSize = true;
-            flowLayoutPanel3.Location = new Point(3, 3);
-            flowLayoutPanel3.Name = "flowLayoutPanel3";
-            flowLayoutPanel3.Size = new Size(0, 0);
-            flowLayoutPanel3.TabIndex = 4;
-            // 
-            // flowLayoutPanel1
-            // 
-            flowLayoutPanel1.AutoScroll = true;
-            flowLayoutPanel1.AutoSize = true;
-            flowLayoutPanel1.Location = new Point(20, 90);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(886, 47);
-            flowLayoutPanel1.TabIndex = 3;
             // 
             // comboBoxBands
             // 
@@ -315,8 +375,6 @@
             tabPage1.PerformLayout();
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
-            flowLayoutPanel2.ResumeLayout(false);
-            flowLayoutPanel2.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -336,15 +394,21 @@
         private TabPage tabPage1;
         private TabPage tabPage2;
         private ComboBox comboBoxBands;
-        private Label labelTempCoeffVTC;
-        private Label labelToleranceVTC;
-        private FlowLayoutPanel flowLayoutPanel1;
+        private Label TemperatureCoefficient;
+        private Label Tolerance;
         private Label labelResult;
-        private FlowLayoutPanel flowLayoutPanel7;
-        private FlowLayoutPanel flowLayoutPanel6;
-        private FlowLayoutPanel flowLayoutPanel5;
-        private FlowLayoutPanel flowLayoutPanel4;
-        private FlowLayoutPanel flowLayoutPanel2;
-        private FlowLayoutPanel flowLayoutPanel3;
+        private Label label1;
+        private ComboBox comboBox4;
+        private ComboBox comboBox3;
+        private ComboBox comboBox2;
+        private ComboBox comboBox1;
+        private Label label6;
+        private Label label5;
+        private Label label4;
+        private Label label3;
+        private Label label2;
+        private ComboBox comboBox6;
+        private ComboBox comboBox5;
+        private Button button2;
     }
 }

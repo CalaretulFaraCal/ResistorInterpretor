@@ -79,7 +79,7 @@ public class ValueConverterLogic(IMainFormUI ui, IListManager listManager, IComb
         // Add tolerance band 
         if (bandCount > 3)
         {
-            var colorName = comboBox1.GetSelectedColor("tolerance", "Gold");
+            var colorName = comboBox1.GetSelectedColor("tolerance", "Brown");
             var colorInfo = ResistorColorInfo.AllColors.FirstOrDefault(c => c.Name == colorName);
             if (colorInfo?.Tolerance.HasValue == true)
                 listManager.AddBand(colorInfo.Color, $"{colorName} (±{colorInfo.Tolerance}%)");
