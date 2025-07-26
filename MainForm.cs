@@ -16,6 +16,7 @@ public partial class MainForm : Form, IMainFormUI
 
     private readonly ILabelManager toleranceLabelManager;
     private readonly ILabelManager tempCoeffLabelManager;
+    private readonly ILabelManager[] colorBandLabelManagers;
 
     private readonly IRadioButtonManager radioButtonManager;
 
@@ -51,11 +52,21 @@ public partial class MainForm : Form, IMainFormUI
             "comboBox4", "comboBox5", "comboBox6"
         };
 
+        colorBandLabelManagers = new ILabelManager[]
+        {
+            new LabelManager(label1),
+            new LabelManager(label2),
+            new LabelManager(label3),
+            new LabelManager(label4),
+            new LabelManager(label5),
+            new LabelManager(label6)
+        };
+
         toleranceLabelManager = new LabelManager(Tolerance);
         tempCoeffLabelManager = new LabelManager(TemperatureCoefficient);
 
         logic = new ValueConverterLogic(this, listManager, comboBoxManageTolerance, comboBoxManageTempCoeff);
-        colorLogic = new ColorConverterLogic(comboBoxBands, colorBandManagers, labelResult);
+        colorLogic = new ColorConverterLogic(comboBoxBands, colorBandManagers, labelResult, colorBandLabelManagers);
 
         radioButtonManager = new RadioButtonManager(
             radioButtonBands_3,
@@ -67,20 +78,19 @@ public partial class MainForm : Form, IMainFormUI
         toleranceLabelManager.SetVisibility(false);
         tempCoeffLabelManager.SetVisibility(false);
 
+        comboBoxManageUnits.PopulateComboBox("units");
+
         comboBoxManageBands.PopulateComboBox("bands");
         comboBoxBands.SelectedIndex = logic.previousBandCount - 3;
 
         for (int i = 0; i < colorBandManagers.Length; i++)
-        {
             colorBandManagers[i].PopulateComboBox(bandComboKeys[i]);
-        }
-
 
         comboBoxManageTolerance.UpdateComboBoxVisibility(logic.previousBandCount, -1, "tolerance");
         comboBoxManageTempCoeff.UpdateComboBoxVisibility(logic.previousBandCount, -1, "temperatureCoefficient");
         colorLogic.UpdateBandComboBoxVisibility(logic.previousBandCount, -1, colorBandManagers);
 
-        comboBoxManageUnits.PopulateComboBox("units");
+        
 
         listManager.Initialize();
 
@@ -98,7 +108,8 @@ public partial class MainForm : Form, IMainFormUI
             comboBoxManageTolerance.UpdateComboBoxVisibility(bandCount, logic.previousBandCount, "tolerance");
             comboBoxManageTempCoeff.UpdateComboBoxVisibility(bandCount, logic.previousBandCount, "temperatureCoefficient");
 
-            colorLogic.UpdateBandComboBoxVisibility(bandCount, logic.previousBandCount, colorBandManagers); logic.previousBandCount = bandCount;
+            colorLogic.UpdateBandComboBoxVisibility(bandCount, logic.previousBandCount, colorBandManagers); 
+            logic.previousBandCount = bandCount;
         };
 
     }

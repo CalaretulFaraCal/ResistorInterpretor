@@ -11,12 +11,17 @@ public class ComboBoxManager(ComboBox comboBox) : IComboBoxManager
             return defaultColor;
 
         var selectedText = comboBox.SelectedItem + "";
+
+        // If the item contains parentheses (e.g., ±5% (Green)), extract the color name
         var startIndex = selectedText.IndexOf('(');
         var endIndex = selectedText.IndexOf(')');
         if (startIndex >= 0 && endIndex > startIndex)
             return selectedText.Substring(startIndex + 1, endIndex - startIndex - 1);
-        return defaultColor;
+
+        // Otherwise, return the item text directly (e.g., "Red", "Green", etc.)
+        return selectedText;
     }
+
 
     public void PopulateComboBox(string propertyType)
     {

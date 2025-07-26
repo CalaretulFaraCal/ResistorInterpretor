@@ -1,5 +1,4 @@
 ﻿using ResistorInterpretor.Contracts;
-using Label = System.Windows.Forms.Label;
 
 namespace ResistorInterpretor.Services
 {
@@ -10,14 +9,17 @@ namespace ResistorInterpretor.Services
                 label.Visible = visible;
         }
 
-        public void UpdateLabelVisibility(string name, int bandCount)
+        public void UpdateLabelVisibility(string propertyType, int bandCount)
         {
-            if(name.ToLower()=="tolerance")
-                SetVisibility(bandCount>3);
-
-            if (name.ToLower() == "temperaturecoefficient")
-                SetVisibility(bandCount==6);
-
+            label.Visible = propertyType switch
+            {
+                "tolerance" => bandCount > 3,
+                "temperatureCoefficient" => bandCount == 6,
+                "comboBox3" => bandCount >= 5,
+                "comboBox5" => bandCount >= 4,
+                "comboBox6" => bandCount == 6,
+                _ => label.Visible
+            };
         }
     }
 }
