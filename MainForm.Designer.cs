@@ -58,6 +58,7 @@
             label1 = new Label();
             labelResult = new Label();
             comboBoxBands = new ComboBox();
+            listView1 = new ListView();
             tabValueToColor.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -72,9 +73,9 @@
             // 
             // listViewVTC
             // 
-            listViewVTC.Location = new Point(573, 58);
+            listViewVTC.Location = new Point(526, 79);
             listViewVTC.Name = "listViewVTC";
-            listViewVTC.Size = new Size(197, 311);
+            listViewVTC.Size = new Size(180, 156);
             listViewVTC.TabIndex = 2;
             listViewVTC.UseCompatibleStateImageBehavior = false;
             // 
@@ -170,6 +171,7 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(listView1);
             tabPage1.Controls.Add(TemperatureCoefficient);
             tabPage1.Controls.Add(Tolerance);
             tabPage1.Controls.Add(inputValue);
@@ -362,6 +364,14 @@
             comboBoxBands.Size = new Size(121, 23);
             comboBoxBands.TabIndex = 1;
             // 
+            // listView1
+            // 
+            listView1.Location = new Point(94, 267);
+            listView1.Name = "listView1";
+            listView1.Size = new Size(759, 326);
+            listView1.TabIndex = 13;
+            listView1.UseCompatibleStateImageBehavior = false;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -410,5 +420,6 @@
         private ComboBox comboBox6;
         private ComboBox comboBox5;
         private Button button2;
+        private ListView listView1;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ResistorInterpretor.Contracts;
 using ResistorInterpretor.Logic;
 using ResistorInterpretor.Services;
+using ResistorInterpretor.History;
 
 namespace ResistorInterpretor;
 
@@ -23,6 +24,9 @@ public partial class MainForm : Form, IMainFormUI
     private readonly ValueConverterLogic logic;
     private readonly ColorConverterLogic colorLogic;
 
+    private readonly IValueToColorHistoryManager valueToColorHistoryManager;
+    private readonly IValueToColorHistoryDisplay valueToColorHistoryDisplay;
+    private readonly IHistoryRestoreManager historyRestoreManager;
 
     public string Value => inputValue.Text;
     public string Suffix => comboBoxUnits.SelectedItem?.ToString() ?? "Ohm";
@@ -62,6 +66,23 @@ public partial class MainForm : Form, IMainFormUI
             new LabelManager(label6)
         };
 
+        valueToColorHistoryManager = new ValueToColorHistoryManager();
+
+        historyRestoreManager = new HistoryRestoreManager(
+            this,
+            comboBoxManageUnits,
+            comboBoxManageBands,
+            comboBoxManageTolerance,
+            comboBoxManageTempCoeff,
+            colorBandManagers,
+            logic,
+            colorLogic);
+
+        valueToColorHistoryDisplay = new ValueToColorHistoryDisplay(
+            listView1, // Your new ListView
+            valueToColorHistoryManager,
+            historyRestoreManager);
+
         toleranceLabelManager = new LabelManager(Tolerance);
         tempCoeffLabelManager = new LabelManager(TemperatureCoefficient);
 
@@ -90,8 +111,6 @@ public partial class MainForm : Form, IMainFormUI
         comboBoxManageTempCoeff.UpdateComboBoxVisibility(logic.previousBandCount, -1, "temperatureCoefficient");
         colorLogic.UpdateBandComboBoxVisibility(logic.previousBandCount, -1, colorBandManagers);
 
-        
-
         listManager.Initialize();
 
         radioButtonManager.BandCountChanged += (_, _) =>
@@ -108,10 +127,35 @@ public partial class MainForm : Form, IMainFormUI
             comboBoxManageTolerance.UpdateComboBoxVisibility(bandCount, logic.previousBandCount, "tolerance");
             comboBoxManageTempCoeff.UpdateComboBoxVisibility(bandCount, logic.previousBandCount, "temperatureCoefficient");
 
-            colorLogic.UpdateBandComboBoxVisibility(bandCount, logic.previousBandCount, colorBandManagers); 
+            colorLogic.UpdateBandComboBoxVisibility(bandCount, logic.previousBandCount, colorBandManagers);
             logic.previousBandCount = bandCount;
         };
 
+        logic.ConversionCompleted += (sender, args) =>
+        {
+            valueToColorHistoryManager.SaveEntry(
+                args.Value,
+                args.Unit,
+                args.BandCount,
+                args.ToleranceColor,
+                args.TempCoeffColor);
+            valueToColorHistoryDisplay.RefreshDisplay();
+        };
+
+    }
+    public void SwitchToValueToColorTab()
+    {
+        tabValueToColor.SelectedIndex = 0;
+    }
+
+    public void SwitchToColorToValueTab()
+    {
+        tabValueToColor.SelectedIndex = 1;
+    }
+
+    public void SetResistanceValue(double value)
+    {
+        inputValue.Text = value.ToString();
     }
 
     private void button2_Click(object sender, EventArgs e)

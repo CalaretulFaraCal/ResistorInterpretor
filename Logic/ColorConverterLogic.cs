@@ -1,10 +1,9 @@
 ﻿using ResistorInterpretor.Contracts;
-using ResistorInterpretor.Services;
-
 namespace ResistorInterpretor.Logic
 {
     public class ColorConverterLogic(ComboBox bandSelector, IComboBoxManager[] colorManagers, Label resultLabel, ILabelManager[] labelManager) : IColorConverterLogic
     {
+        public event EventHandler<ColorConversionEventArgs> ConversionCompleted;
         public void Convert()
         {
             int bandCount = bandSelector.SelectedIndex + 3;
@@ -20,7 +19,7 @@ namespace ResistorInterpretor.Logic
                 selectedColors[i] = colorManagers[i].GetSelectedColor(propertyTypes[i], "Black");
 
             var colors = selectedColors
-                .Select(name => ResistorColorInfo.AllColors.FirstOrDefault(c => c.Name == name))
+                .Select(name => ResistorColorInfo.AllColors.First(c => c.Name == name))
                 .ToArray();
 
             int digits = 0;
@@ -30,30 +29,28 @@ namespace ResistorInterpretor.Logic
 
             if (bandCount == 3 || bandCount == 4)
             {
-                digits = (colors[0]?.Digit ?? 0) * 10 + 
+                digits = (colors[0]?.Digit ?? 0) * 10 +
                          (colors[1]?.Digit ?? 0);
-                multiplier = Math.Pow(10, colors[2]?.MultiplierExponent ?? 0);
-
-                if (bandCount == 4)
-                    tolerance = colors[3]?.Tolerance;
-
             }
             else if (bandCount == 5 || bandCount == 6)
             {
                 digits = (colors[0]?.Digit ?? 0) * 100 +
                          (colors[1]?.Digit ?? 0) * 10 +
                          (colors[2]?.Digit ?? 0);
-                multiplier = Math.Pow(10, colors[3]?.MultiplierExponent ?? 0);
                 tolerance = colors[4]?.Tolerance;
-
-                if (bandCount == 6)
-                    tempCoeff = colors[5]?.TemperatureCoefficient;
-
             }
+            multiplier = Math.Pow(10, colors[3]?.MultiplierExponent ?? 0);
+
+            if (bandCount >= 4)
+                tolerance = colors[4]?.Tolerance;
+            if (bandCount == 6)
+                tempCoeff = colors[5]?.TemperatureCoefficient;
 
             double value = digits * multiplier;
             string result = FormatResult(value, tolerance, tempCoeff);
             resultLabel.Text = "Resistance: " + result;
+
+
         }
 
         private string FormatWithSuffix(double value)
@@ -87,6 +84,18 @@ namespace ResistorInterpretor.Logic
             labelManager[2].UpdateLabelVisibility("comboBox3", bandCount);
             labelManager[4].UpdateLabelVisibility("comboBox5", bandCount);
             labelManager[5].UpdateLabelVisibility("comboBox6", bandCount);
+        }
+
+        public class ColorConversionEventArgs : EventArgs
+        {
+            public int BandCount { get; }
+            public List<string> ColorBandNames { get; }
+
+            public ColorConversionEventArgs(int bandCount, List<string> colorBandNames)
+            {
+                BandCount = bandCount;
+                ColorBandNames = colorBandNames;
+            }
         }
     }
 }

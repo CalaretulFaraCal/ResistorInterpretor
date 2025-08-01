@@ -1,5 +1,4 @@
 ﻿using ResistorInterpretor.Contracts;
-using System.Linq;
 
 namespace ResistorInterpretor.Services;
 
@@ -21,8 +20,6 @@ public class ComboBoxManager(ComboBox comboBox) : IComboBoxManager
         // Otherwise, return the item text directly (e.g., "Red", "Green", etc.)
         return selectedText;
     }
-
-
     public void PopulateComboBox(string propertyType)
     {
         var previousSelection = comboBox.SelectedItem?.ToString();
@@ -38,7 +35,7 @@ public class ComboBoxManager(ComboBox comboBox) : IComboBoxManager
         {
             case "units":
                 comboBox.Items.Clear();
-                comboBox.Items.AddRange(new object[] { "Ohm", "kOhm", "MOhm" });
+                comboBox.Items.AddRange(new object[] { "Ohm", "kOhm", "MOhm", "GOhm" });
                 comboBox.SelectedIndex = 0;
                 break;
 
@@ -107,4 +104,30 @@ public class ComboBoxManager(ComboBox comboBox) : IComboBoxManager
         }
     }
 
+    public void SetSelectedItem(string text)
+    {
+        for (int i = 0; i < comboBox.Items.Count; i++)
+        {
+            if (comboBox.Items[i].ToString() == text)
+            {
+                comboBox.SelectedIndex = i;
+                return;
+            }
+        }
+    }
+
+    public int GetItemCount()
+    {
+        return comboBox.Items.Count;
+    }
+
+    public object GetItemAt(int index)
+    {
+        return comboBox.Items[index];
+    }
+
+    public void SetSelectedIndex(int index)
+    {
+        comboBox.SelectedIndex = index;
+    }
 }

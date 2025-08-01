@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualBasic.Logging;
-using ResistorInterpretor.Contracts;
+﻿using ResistorInterpretor.Contracts;
+using System.Globalization;
 
 namespace ResistorInterpretor.Logic;
 
@@ -7,9 +7,11 @@ public class ValueConverterLogic(IMainFormUI ui, IListManager listManager, IComb
 {
     public int previousBandCount { get; set; } = 3;
 
+    public event EventHandler<ValueConversionEventArgs> ConversionCompleted;
+
     public void Convert()
     {
-        if (!double.TryParse(ui.Value, out var value) || value <= 0)
+        if (!double.TryParse(ui.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out double value) || value <= 0)
         {
             UI.ShowMessage("Enter a valid number.");
             return;
@@ -19,19 +21,20 @@ public class ValueConverterLogic(IMainFormUI ui, IListManager listManager, IComb
         {
             case "kOhm": value *= 1_000; break;
             case "MOhm": value *= 1_000_000; break;
+            case "GOhm": value *= 1_000_000_000; break;
         }
 
-        var bandCount = previousBandCount;
-        var significantDigitCount = bandCount >= 5 ? 3 : 2;
+        int bandCount = previousBandCount;
+        int significantDigitCount = bandCount >= 5 ? 3 : 2;
 
-        var significantDigits = "";
-        var multiplierIndex = -1;
+        string significantDigits = "";
+        int multiplierIndex = -1;
 
-        for (var exponent = -2; exponent <= 9; exponent++)
+        for (int exponent = -2; exponent <= 9; exponent++)
         {
-            var testValue = value / Math.Pow(10, exponent);
-            var maxValue = (int)Math.Pow(10, significantDigitCount);
-            var rounded = (int)Math.Round(testValue);
+            double testValue = value / Math.Pow(10, exponent);
+            int maxValue = (int)Math.Pow(10, significantDigitCount);
+            int rounded = (int)Math.Round(testValue);
 
             if (rounded >= 0 && rounded < maxValue)
             {
@@ -41,7 +44,7 @@ public class ValueConverterLogic(IMainFormUI ui, IListManager listManager, IComb
                     -2 => 11, // Silver
                     -1 => 10, // Gold
                     >= 0 and <= 9 => exponent,
-                    _ => -1,
+                    _ => -1
                 };
                 break;
             }
@@ -53,7 +56,20 @@ public class ValueConverterLogic(IMainFormUI ui, IListManager listManager, IComb
             return;
         }
 
+        // Collect data for history
+        string? toleranceColor = comboBox1.GetSelectedColor("tolerance", null);
+        string? tempCoeffColor = comboBox2.GetSelectedColor("temperatureCoefficient", null);
+
+        // Trigger the event with all necessary data
+        ConversionCompleted?.Invoke(this, new ValueConversionEventArgs(
+            double.Parse(ui.Value, CultureInfo.InvariantCulture),
+            ui.Suffix,
+            previousBandCount,
+            toleranceColor,
+            tempCoeffColor));
+
         GenerateBands(significantDigits, multiplierIndex, bandCount);
+
     }
 
     private void GenerateBands(string significantDigits, int multiplierIndex, int bandCount)
@@ -105,5 +121,26 @@ public class ValueConverterLogic(IMainFormUI ui, IListManager listManager, IComb
     {
         comboBox2.UpdateComboBoxVisibility(bandCount, previousBandCount, "temperatureCoefficient");
     }
+    public class ValueConversionEventArgs : EventArgs
+    {
+        public double Value { get; }
+        public string Unit { get; }
+        public int BandCount { get; }
+        public string? ToleranceColor { get; }
+        public string? TempCoeffColor { get; }
 
+        public ValueConversionEventArgs(
+            double value,
+            string unit,
+            int bandCount,
+            string? toleranceColor,
+            string? tempCoeffColor)
+        {
+            Value = value;
+            Unit = unit;
+            BandCount = bandCount;
+            ToleranceColor = toleranceColor;
+            TempCoeffColor = tempCoeffColor;
+        }
+    }
 }
