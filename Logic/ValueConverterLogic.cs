@@ -6,12 +6,14 @@ namespace ResistorInterpretor.Logic;
 public class ValueConverterLogic(IMainFormUI ui, IListManager listManager, IComboBoxManager comboBox1, IComboBoxManager comboBox2) : IValueConverterLogic
 {
     public int previousBandCount { get; set; } = 3;
+    private bool suppressHistory = false;
 
-    public event EventHandler<ValueConversionEventArgs> ConversionCompleted;
+    public event EventHandler<ValueConversionEventArgs> HistoryEntry;
 
-    public void Convert()
+    public void Convert(bool suppressHistory = false)
     {
-        if (!double.TryParse(ui.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out double value) || value <= 0)
+        var valueText = ui.Value.Replace(',', '.');
+        if (!double.TryParse(valueText, NumberStyles.Any, CultureInfo.InvariantCulture, out double value) || value <= 0)
         {
             UI.ShowMessage("Enter a valid number.");
             return;
@@ -61,12 +63,15 @@ public class ValueConverterLogic(IMainFormUI ui, IListManager listManager, IComb
         string? tempCoeffColor = comboBox2.GetSelectedColor("temperatureCoefficient", null);
 
         // Trigger the event with all necessary data
-        ConversionCompleted?.Invoke(this, new ValueConversionEventArgs(
-            double.Parse(ui.Value, CultureInfo.InvariantCulture),
-            ui.Suffix,
-            previousBandCount,
-            toleranceColor,
-            tempCoeffColor));
+        if (!suppressHistory)
+        {
+            HistoryEntry?.Invoke(this, new ValueConversionEventArgs(
+                double.Parse(ui.Value, CultureInfo.InvariantCulture),
+                ui.Suffix,
+                previousBandCount,
+                toleranceColor,
+                tempCoeffColor));
+        }
 
         GenerateBands(significantDigits, multiplierIndex, bandCount);
 

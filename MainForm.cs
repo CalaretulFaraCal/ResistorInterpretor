@@ -66,23 +66,6 @@ public partial class MainForm : Form, IMainFormUI
             new LabelManager(label6)
         };
 
-        valueToColorHistoryManager = new ValueToColorHistoryManager();
-
-        historyRestoreManager = new HistoryRestoreManager(
-            this,
-            comboBoxManageUnits,
-            comboBoxManageBands,
-            comboBoxManageTolerance,
-            comboBoxManageTempCoeff,
-            colorBandManagers,
-            logic,
-            colorLogic);
-
-        valueToColorHistoryDisplay = new ValueToColorHistoryDisplay(
-            listView1, // Your new ListView
-            valueToColorHistoryManager,
-            historyRestoreManager);
-
         toleranceLabelManager = new LabelManager(Tolerance);
         tempCoeffLabelManager = new LabelManager(TemperatureCoefficient);
 
@@ -95,6 +78,25 @@ public partial class MainForm : Form, IMainFormUI
             radioButtonBands_5,
             radioButtonBands_6,
             logic);
+
+        historyRestoreManager = new HistoryRestoreManager(
+            this,
+            comboBoxManageUnits,
+            comboBoxManageBands,
+            comboBoxManageTolerance,
+            comboBoxManageTempCoeff,
+            colorBandManagers,
+            logic,
+            radioButtonManager,
+            colorLogic);
+
+
+        valueToColorHistoryManager = new ValueToColorHistoryManager();
+
+        valueToColorHistoryDisplay = new ValueToColorHistoryDisplay(
+            listView1,
+            valueToColorHistoryManager,
+            historyRestoreManager);
 
         toleranceLabelManager.SetVisibility(false);
         tempCoeffLabelManager.SetVisibility(false);
@@ -131,7 +133,7 @@ public partial class MainForm : Form, IMainFormUI
             logic.previousBandCount = bandCount;
         };
 
-        logic.ConversionCompleted += (sender, args) =>
+        logic.HistoryEntry += (sender, args) =>
         {
             valueToColorHistoryManager.SaveEntry(
                 args.Value,
@@ -142,15 +144,6 @@ public partial class MainForm : Form, IMainFormUI
             valueToColorHistoryDisplay.RefreshDisplay();
         };
 
-    }
-    public void SwitchToValueToColorTab()
-    {
-        tabValueToColor.SelectedIndex = 0;
-    }
-
-    public void SwitchToColorToValueTab()
-    {
-        tabValueToColor.SelectedIndex = 1;
     }
 
     public void SetResistanceValue(double value)

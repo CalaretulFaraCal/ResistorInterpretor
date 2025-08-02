@@ -11,15 +11,12 @@ namespace ResistorInterpretor.Services
         IComboBoxManager toleranceComboBox,
         IComboBoxManager tempCoeffComboBox,
         IComboBoxManager[] colorBandComboBoxes,
-        ValueConverterLogic valueLogic,
+        ValueConverterLogic logic,
+        IRadioButtonManager radioButtonManager,
         IColorConverterLogic colorLogic) : IHistoryRestoreManager
     {
         public void RestoreValueToColorSettings(ValueToColorHistoryEntry entry)
         {
-            // Set the tab control to the Value-to-Color tab
-            mainForm.SwitchToValueToColorTab();
-
-            // Restore the value and unit
             mainForm.SetResistanceValue(entry.Value);
 
             // Find and select the unit in the units combo box
@@ -33,15 +30,7 @@ namespace ResistorInterpretor.Services
             }
 
             // Restore band count - find and select the appropriate item
-            for (int i = 0; i < bandsComboBox.GetItemCount(); i++)
-            {
-                var item = bandsComboBox.GetItemAt(i).ToString();
-                if (item.StartsWith(entry.BandCount.ToString()))
-                {
-                    bandsComboBox.SetSelectedIndex(i);
-                    break;
-                }
-            }
+            radioButtonManager.SetBandCount(entry.BandCount);
 
             // Restore tolerance color if present
             if (!string.IsNullOrEmpty(entry.ToleranceColor))
@@ -72,14 +61,11 @@ namespace ResistorInterpretor.Services
             }
 
             // Perform the conversion
-            valueLogic.Convert();
+            logic.Convert(suppressHistory: true);
         }
 
         public void RestoreColorToValueSettings(ColorToValueHistoryEntry entry)
         {
-            // Set the tab control to the Color-to-Value tab
-            mainForm.SwitchToColorToValueTab();
-
             // Set the band count first - find and select the appropriate item
             for (int i = 0; i < bandsComboBox.GetItemCount(); i++)
             {

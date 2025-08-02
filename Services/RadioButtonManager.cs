@@ -1,4 +1,6 @@
-﻿using ResistorInterpretor.Contracts;
+﻿using System;
+using System.Linq;
+using ResistorInterpretor.Contracts;
 
 namespace ResistorInterpretor.Services
 {
@@ -9,6 +11,7 @@ namespace ResistorInterpretor.Services
         private readonly RadioButton rb3;
         private readonly RadioButton rb4;
         private readonly IValueConverterLogic logic;
+        private bool suppressEvents = false;
 
         public event EventHandler? BandCountChanged;
 
@@ -30,15 +33,18 @@ namespace ResistorInterpretor.Services
 
         private void OnBandCountChanged(object? sender, EventArgs e)
         {
+            if (suppressEvents) return;
             BandCountChanged?.Invoke(this, e);
         }
 
         public int GetValue()
         {
             var buttons = new[] { rb1, rb2, rb3, rb4 };
-            var selectedButton = buttons.First(rb => rb.Checked);
-            var text = selectedButton.Text;
-            return int.Parse(text[0].ToString());
+            var selectedButton = buttons.FirstOrDefault(rb => rb.Checked);
+            if (selectedButton == null)
+                throw new InvalidOperationException("No band radio button is checked.");
+            var digits = new string(selectedButton.Text.Where(char.IsDigit).ToArray());
+            return int.Parse(digits);
         }
 
         public int UpdateBandCount()
@@ -54,6 +60,19 @@ namespace ResistorInterpretor.Services
             logic.previousBandCount = bandCount;
 
             return bandCount;
+        }
+
+        public void SetBandCount(int bandCount)
+        {
+            suppressEvents = true;
+            rb1.Checked = bandCount == 3;
+            rb2.Checked = bandCount == 4;
+            rb3.Checked = bandCount == 5;
+            rb4.Checked = bandCount == 6;
+            suppressEvents = false;
+
+            // Manually fire the event ONCE after all buttons are set
+            BandCountChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

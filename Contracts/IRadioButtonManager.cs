@@ -11,6 +11,7 @@ namespace ResistorInterpretor.Contracts
         event EventHandler? BandCountChanged;
         int GetValue();
         int UpdateBandCount();
+        void SetBandCount(int bandCount);
 
     }
 }
