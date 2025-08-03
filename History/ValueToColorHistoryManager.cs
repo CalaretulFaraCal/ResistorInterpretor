@@ -1,8 +1,7 @@
-﻿using ResistorInterpretor.Contracts;
-using ResistorInterpretor.History;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using ResistorInterpretor.Contracts;
 
-namespace ResistorInterpretor.Services
+namespace ResistorInterpretor.History
 {
     public class ValueToColorHistoryManager : IValueToColorHistoryManager
     {
@@ -59,7 +58,7 @@ namespace ResistorInterpretor.Services
             SaveEntries();
         }
 
-        public IEnumerable<ValueToColorHistoryEntry> GetRecentEntries(int count = 20)
+        public IEnumerable<ValueToColorHistoryEntry> GetRecentEntries(int count = 35)
         {
             return _entries.OrderByDescending(e => e.Timestamp).Take(count);
         }

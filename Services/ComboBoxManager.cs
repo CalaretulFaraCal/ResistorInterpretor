@@ -12,13 +12,11 @@ public class ComboBoxManager(ComboBox comboBox) : IComboBoxManager
 
         var selectedText = comboBox.SelectedItem + "";
 
-        // If the item contains parentheses (e.g., ±5% (Green)), extract the color name
         var startIndex = selectedText.IndexOf('(');
         var endIndex = selectedText.IndexOf(')');
         if (startIndex >= 0 && endIndex > startIndex)
             return selectedText.Substring(startIndex + 1, endIndex - startIndex - 1);
 
-        // Otherwise, return the item text directly (e.g., "Red", "Green", etc.)
         return selectedText;
     }
     public void PopulateComboBox(string propertyType)
@@ -34,7 +32,13 @@ public class ComboBoxManager(ComboBox comboBox) : IComboBoxManager
 
         switch (propertyType)
         {
-            case "sort":
+            case "filterVTC":
+                comboBox.Items.Clear();
+                comboBox.Items.AddRange(new object[] { "None", "Ohm", "kOhm", "MOhm", "GOhm", "3 bands", "4 bands", "5 bands", "6 bands" });
+                comboBox.SelectedIndex = 0; 
+                break;
+
+            case "sortVTC":
                 comboBox.Items.Clear();
                 comboBox.Items.AddRange(new object[] { "All", "Value", "Bands", "Tolerance", "TempCoeff" });
                 comboBox.SelectedIndex = 0;

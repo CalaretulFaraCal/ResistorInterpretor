@@ -1,8 +1,7 @@
-﻿using ResistorInterpretor.Contracts;
-using ResistorInterpretor.History;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using ResistorInterpretor.Contracts;
 
-namespace ResistorInterpretor.Services
+namespace ResistorInterpretor.History
 {
     public class ColorToValueHistoryManager : IColorToValueHistoryManager
     {

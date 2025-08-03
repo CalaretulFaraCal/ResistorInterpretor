@@ -1,8 +1,7 @@
 ﻿using ResistorInterpretor.Contracts;
-using ResistorInterpretor.History;
 using ResistorInterpretor.Logic;
 
-namespace ResistorInterpretor.Services
+namespace ResistorInterpretor.History
 {
     public class HistoryRestoreManager(
         IMainFormUI mainForm,

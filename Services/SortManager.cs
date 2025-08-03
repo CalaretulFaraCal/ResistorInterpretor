@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using ResistorInterpretor.Contracts;
 using ResistorInterpretor.History;
 
 namespace ResistorInterpretor.Services
 {
-    public class HistorySortManager : IHistorySortManager
+    public class SortManager : ISortManager
     {
         public IEnumerable<ValueToColorHistoryEntry> Sort(
             IEnumerable<ValueToColorHistoryEntry> entries, string sortBy)
@@ -17,7 +15,6 @@ namespace ResistorInterpretor.Services
                 "Bands" => entries.OrderBy(e => e.BandCount),
                 "Tolerance" => entries.OrderBy(e => ParseTolerance(e.ToleranceColor)),
                 "TempCoeff" => entries.OrderBy(e => ParseTempCoeff(e.TempCoefficientColor)),
-                "Unit" => entries.OrderBy(e => UnitRank(e.Unit)),
                 _ => entries
             };
         }
@@ -46,18 +43,6 @@ namespace ResistorInterpretor.Services
             if (string.IsNullOrWhiteSpace(tempCoeff)) return int.MaxValue;
             var match = Regex.Match(tempCoeff, @"(\d+)ppm");
             return match.Success ? int.Parse(match.Groups[1].Value) : int.MaxValue;
-        }
-
-        private int UnitRank(string unit)
-        {
-            return unit switch
-            {
-                "Ohm" or "Ω" => 0,
-                "kOhm" or "kΩ" => 1,
-                "MOhm" or "MΩ" => 2,
-                "GOhm" or "GΩ" => 3,
-                _ => 4
-            };
         }
     }
 }

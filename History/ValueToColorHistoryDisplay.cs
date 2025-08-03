@@ -1,7 +1,6 @@
 ﻿using ResistorInterpretor.Contracts;
-using ResistorInterpretor.History;
 
-namespace ResistorInterpretor.Services
+namespace ResistorInterpretor.History
 {
     public class ValueToColorHistoryDisplay : IValueToColorHistoryDisplay
     {

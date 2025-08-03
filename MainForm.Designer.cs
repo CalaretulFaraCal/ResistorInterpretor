@@ -40,11 +40,19 @@
             comboBoxUnits = new ComboBox();
             tabValueToColor = new TabControl();
             tabPage1 = new TabPage();
+            label10 = new Label();
+            comboBoxFilter = new ComboBox();
+            label9 = new Label();
+            label8 = new Label();
+            label7 = new Label();
+            comboBoxSort = new ComboBox();
             buttonClearHistory = new Button();
             listView1 = new ListView();
             TemperatureCoefficient = new Label();
             Tolerance = new Label();
             tabPage2 = new TabPage();
+            label11 = new Label();
+            listView2 = new ListView();
             button2 = new Button();
             comboBox6 = new ComboBox();
             comboBox5 = new ComboBox();
@@ -60,7 +68,6 @@
             label1 = new Label();
             labelResult = new Label();
             comboBoxBands = new ComboBox();
-            comboBoxSort = new ComboBox();
             tabValueToColor.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -173,6 +180,11 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(label10);
+            tabPage1.Controls.Add(comboBoxFilter);
+            tabPage1.Controls.Add(label9);
+            tabPage1.Controls.Add(label8);
+            tabPage1.Controls.Add(label7);
             tabPage1.Controls.Add(comboBoxSort);
             tabPage1.Controls.Add(buttonClearHistory);
             tabPage1.Controls.Add(listView1);
@@ -196,9 +208,61 @@
             tabPage1.Text = "Value to Color";
             tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(94, 49);
+            label10.Name = "label10";
+            label10.Size = new Size(89, 15);
+            label10.TabIndex = 20;
+            label10.Text = "Introduce value";
+            // 
+            // comboBoxFilter
+            // 
+            comboBoxFilter.FormattingEnabled = true;
+            comboBoxFilter.Location = new Point(692, 384);
+            comboBoxFilter.Name = "comboBoxFilter";
+            comboBoxFilter.Size = new Size(121, 23);
+            comboBoxFilter.TabIndex = 19;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(716, 359);
+            label9.Name = "label9";
+            label9.Size = new Size(74, 15);
+            label9.TabIndex = 18;
+            label9.Text = "Filter History";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(556, 359);
+            label8.Name = "label8";
+            label8.Size = new Size(69, 15);
+            label8.TabIndex = 17;
+            label8.Text = "Sort History";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(94, 249);
+            label7.Name = "label7";
+            label7.Size = new Size(45, 15);
+            label7.TabIndex = 16;
+            label7.Text = "History";
+            // 
+            // comboBoxSort
+            // 
+            comboBoxSort.FormattingEnabled = true;
+            comboBoxSort.Location = new Point(532, 384);
+            comboBoxSort.Name = "comboBoxSort";
+            comboBoxSort.Size = new Size(121, 23);
+            comboBoxSort.TabIndex = 15;
+            // 
             // buttonClearHistory
             // 
-            buttonClearHistory.Location = new Point(566, 277);
+            buttonClearHistory.Location = new Point(532, 304);
             buttonClearHistory.Name = "buttonClearHistory";
             buttonClearHistory.Size = new Size(75, 23);
             buttonClearHistory.TabIndex = 14;
@@ -234,6 +298,8 @@
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(label11);
+            tabPage2.Controls.Add(listView2);
             tabPage2.Controls.Add(button2);
             tabPage2.Controls.Add(comboBox6);
             tabPage2.Controls.Add(comboBox5);
@@ -256,6 +322,23 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Color to Value";
             tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new Point(35, 211);
+            label11.Name = "label11";
+            label11.Size = new Size(45, 15);
+            label11.TabIndex = 24;
+            label11.Text = "History";
+            // 
+            // listView2
+            // 
+            listView2.Location = new Point(35, 229);
+            listView2.Name = "listView2";
+            listView2.Size = new Size(468, 299);
+            listView2.TabIndex = 23;
+            listView2.UseCompatibleStateImageBehavior = false;
             // 
             // button2
             // 
@@ -386,14 +469,6 @@
             comboBoxBands.Size = new Size(121, 23);
             comboBoxBands.TabIndex = 1;
             // 
-            // comboBoxSort
-            // 
-            comboBoxSort.FormattingEnabled = true;
-            comboBoxSort.Location = new Point(566, 334);
-            comboBoxSort.Name = "comboBoxSort";
-            comboBoxSort.Size = new Size(121, 23);
-            comboBoxSort.TabIndex = 15;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -445,5 +520,12 @@
         private ListView listView1;
         private Button buttonClearHistory;
         private ComboBox comboBoxSort;
+        private Label label10;
+        private ComboBox comboBoxFilter;
+        private Label label9;
+        private Label label8;
+        private Label label7;
+        private Label label11;
+        private ListView listView2;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace ResistorInterpretor.Contracts
 {
-    public interface IHistorySortManager
+    public interface ISortManager
     {
         IEnumerable<ValueToColorHistoryEntry> Sort(
             IEnumerable<ValueToColorHistoryEntry> entries, string sortBy);

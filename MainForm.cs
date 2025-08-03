@@ -1,4 +1,5 @@
 ﻿using ResistorInterpretor.Contracts;
+using ResistorInterpretor.History;
 using ResistorInterpretor.Logic;
 using ResistorInterpretor.Services;
 
@@ -13,6 +14,7 @@ public partial class MainForm : Form, IMainFormUI
     private readonly IComboBoxManager comboBoxManageUnits;
     private readonly IComboBoxManager comboBoxManageBands;
     private readonly IComboBoxManager comboBoxSorting;
+    private readonly IComboBoxManager comboBoxFiltering;
     private readonly IComboBoxManager[] colorBandManagers;
 
     private readonly ILabelManager toleranceLabelManager;
@@ -27,7 +29,8 @@ public partial class MainForm : Form, IMainFormUI
     private readonly IValueToColorHistoryManager valueToColorHistoryManager;
     private readonly IValueToColorHistoryDisplay valueToColorHistoryDisplay;
     private readonly IHistoryRestoreManager historyRestoreManager;
-    private readonly IHistorySortManager historySortManager;
+    private readonly ISortManager sortManager;
+    private readonly IFilterManager filterManager;
 
     private readonly IClearHistoryManager clearHistoryManager;
 
@@ -45,6 +48,7 @@ public partial class MainForm : Form, IMainFormUI
         comboBoxManageUnits = new ComboBoxManager(comboBoxUnits);
         comboBoxManageBands = new ComboBoxManager(comboBoxBands);
         comboBoxSorting = new ComboBoxManager(comboBoxSort);
+        comboBoxFiltering = new ComboBoxManager(comboBoxFilter);
         colorBandManagers = new IComboBoxManager[]
         {
             new ComboBoxManager(comboBox1),
@@ -105,13 +109,15 @@ public partial class MainForm : Form, IMainFormUI
             valueToColorHistoryManager,
             valueToColorHistoryDisplay);
 
-        historySortManager = new HistorySortManager();
+        sortManager = new SortManager();
+        filterManager = new FilterManager();
 
         toleranceLabelManager.SetVisibility(false);
         tempCoeffLabelManager.SetVisibility(false);
 
         comboBoxManageUnits.PopulateComboBox("units");
-        comboBoxSorting.PopulateComboBox("sort");
+        comboBoxSorting.PopulateComboBox("sortVTC");
+        comboBoxFiltering.PopulateComboBox("filterVTC");
 
         comboBoxManageBands.PopulateComboBox("bands");
         comboBoxBands.SelectedIndex = logic.previousBandCount - 3;
@@ -145,15 +151,13 @@ public partial class MainForm : Form, IMainFormUI
 
         comboBoxSorting.ComboBox.SelectedIndexChanged += (_, _) =>
         {
-            var sortKey = comboBoxSorting.ComboBox.SelectedItem?.ToString() ?? "All";
-            if (sortKey == "All")
-                valueToColorHistoryDisplay.RefreshDisplay();
-            else
-            {
-                var entries = valueToColorHistoryManager.GetAllEntries();
-                var sorted = historySortManager.Sort(entries, sortKey);
-                valueToColorHistoryDisplay.RefreshDisplay(sorted);
-            }
+            ApplyFilterAndSort();
+        };
+
+        comboBoxFiltering.ComboBox.SelectedIndexChanged += (s, e) =>
+        {
+            filterManager.CurrentFilterValue = comboBoxFilter.SelectedItem?.ToString() ?? "None";
+            ApplyFilterAndSort();
         };
 
         logic.HistoryEntry += (sender, args) =>
@@ -164,18 +168,8 @@ public partial class MainForm : Form, IMainFormUI
                 args.BandCount,
                 args.ToleranceColor,
                 args.TempCoeffColor);
-            var sortKey = comboBoxSorting.ComboBox.SelectedItem?.ToString() ?? "All";
-            if (sortKey == "All")
-                valueToColorHistoryDisplay.RefreshDisplay();
-            else
-            {
-                var entries = valueToColorHistoryManager.GetAllEntries();
-                var sorted = historySortManager.Sort(entries, sortKey);
-                valueToColorHistoryDisplay.RefreshDisplay(sorted);
-            }
-
+            ApplyFilterAndSort();
         };
-
     }
 
     public void SetResistanceValue(double value)
@@ -196,5 +190,13 @@ public partial class MainForm : Form, IMainFormUI
     private void buttonClearHistory_Click(object sender, EventArgs e)
     {
         clearHistoryManager.ClearHistory();
+    }
+    private void ApplyFilterAndSort()
+    {
+        var allEntries = valueToColorHistoryManager.GetAllEntries();
+        var filtered = filterManager.ApplyFilter(allEntries);
+        var sortKey = comboBoxSorting.ComboBox.SelectedItem?.ToString() ?? "All";
+        var sorted = sortKey == "All" ? filtered : sortManager.Sort(filtered, sortKey);
+        valueToColorHistoryDisplay.RefreshDisplay(sorted);
     }
 }
