@@ -40,6 +40,8 @@
             comboBoxUnits = new ComboBox();
             tabValueToColor = new TabControl();
             tabPage1 = new TabPage();
+            buttonClearHistory = new Button();
+            listView1 = new ListView();
             TemperatureCoefficient = new Label();
             Tolerance = new Label();
             tabPage2 = new TabPage();
@@ -58,7 +60,7 @@
             label1 = new Label();
             labelResult = new Label();
             comboBoxBands = new ComboBox();
-            listView1 = new ListView();
+            comboBoxSort = new ComboBox();
             tabValueToColor.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -171,6 +173,8 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(comboBoxSort);
+            tabPage1.Controls.Add(buttonClearHistory);
             tabPage1.Controls.Add(listView1);
             tabPage1.Controls.Add(TemperatureCoefficient);
             tabPage1.Controls.Add(Tolerance);
@@ -191,6 +195,24 @@
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Value to Color";
             tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // buttonClearHistory
+            // 
+            buttonClearHistory.Location = new Point(566, 277);
+            buttonClearHistory.Name = "buttonClearHistory";
+            buttonClearHistory.Size = new Size(75, 23);
+            buttonClearHistory.TabIndex = 14;
+            buttonClearHistory.Text = "Clear";
+            buttonClearHistory.UseVisualStyleBackColor = true;
+            buttonClearHistory.Click += buttonClearHistory_Click;
+            // 
+            // listView1
+            // 
+            listView1.Location = new Point(94, 267);
+            listView1.Name = "listView1";
+            listView1.Size = new Size(432, 326);
+            listView1.TabIndex = 13;
+            listView1.UseCompatibleStateImageBehavior = false;
             // 
             // TemperatureCoefficient
             // 
@@ -364,13 +386,13 @@
             comboBoxBands.Size = new Size(121, 23);
             comboBoxBands.TabIndex = 1;
             // 
-            // listView1
+            // comboBoxSort
             // 
-            listView1.Location = new Point(94, 267);
-            listView1.Name = "listView1";
-            listView1.Size = new Size(759, 326);
-            listView1.TabIndex = 13;
-            listView1.UseCompatibleStateImageBehavior = false;
+            comboBoxSort.FormattingEnabled = true;
+            comboBoxSort.Location = new Point(566, 334);
+            comboBoxSort.Name = "comboBoxSort";
+            comboBoxSort.Size = new Size(121, 23);
+            comboBoxSort.TabIndex = 15;
             // 
             // MainForm
             // 
@@ -421,5 +443,7 @@
         private ComboBox comboBox5;
         private Button button2;
         private ListView listView1;
+        private Button buttonClearHistory;
+        private ComboBox comboBoxSort;
     }
 }

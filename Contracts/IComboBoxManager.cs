@@ -2,6 +2,7 @@
 
 public interface IComboBoxManager
 {
+    ComboBox ComboBox { get; }
     string GetSelectedColor(string propertyType, string defaultColor);
     void PopulateComboBox(string propertyType);
     void RestoreComboBoxSelection(string previousSelection);

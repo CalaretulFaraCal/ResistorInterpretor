@@ -4,8 +4,11 @@ namespace ResistorInterpretor.Contracts
 {
     public interface IValueToColorHistoryDisplay
     {
+        event EventHandler<ValueToColorHistoryEntry>? EntrySelected;
+
         void RefreshDisplay();
         void ClearDisplay();
-        event EventHandler<ValueToColorHistoryEntry>? EntrySelected;
+        void RefreshDisplay(IEnumerable<ValueToColorHistoryEntry> entries);
+
     }
 }

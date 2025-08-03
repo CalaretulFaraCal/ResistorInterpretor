@@ -31,7 +31,7 @@ namespace ResistorInterpretor.Services
             _listView.Columns.Clear();
             _listView.Columns.Add("Time", 70);
             _listView.Columns.Add("Value", 100);
-            _listView.Columns.Add("Settings", 180);
+            _listView.Columns.Add("Settings", 258);
 
             _listView.DoubleClick += ListView_DoubleClick;
             RefreshDisplay();
@@ -53,6 +53,24 @@ namespace ResistorInterpretor.Services
             _listView.Items.Clear();
 
             foreach (var entry in _historyManager.GetRecentEntries(30))
+            {
+                var item = new ListViewItem(entry.Timestamp.ToString("HH:mm"));
+                item.SubItems.Add(entry.DisplayValue);
+                item.SubItems.Add(entry.DisplaySettings);
+                item.Tag = entry;
+                item.ToolTipText = "Double-click to restore settings and calculate";
+                _listView.Items.Add(item);
+            }
+
+            _listView.EndUpdate();
+        }
+
+        public void RefreshDisplay(IEnumerable<ValueToColorHistoryEntry> entries)
+        {
+            _listView.BeginUpdate();
+            _listView.Items.Clear();
+
+            foreach (var entry in entries)
             {
                 var item = new ListViewItem(entry.Timestamp.ToString("HH:mm"));
                 item.SubItems.Add(entry.DisplayValue);

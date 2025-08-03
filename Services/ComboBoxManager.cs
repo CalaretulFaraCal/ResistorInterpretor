@@ -4,6 +4,7 @@ namespace ResistorInterpretor.Services;
 
 public class ComboBoxManager(ComboBox comboBox) : IComboBoxManager
 {
+    public ComboBox ComboBox => comboBox;
     public string GetSelectedColor(string propertyType, string defaultColor)
     {
         if (!comboBox.Visible || comboBox.SelectedIndex < 0)
@@ -33,6 +34,12 @@ public class ComboBoxManager(ComboBox comboBox) : IComboBoxManager
 
         switch (propertyType)
         {
+            case "sort":
+                comboBox.Items.Clear();
+                comboBox.Items.AddRange(new object[] { "All", "Value", "Bands", "Tolerance", "TempCoeff" });
+                comboBox.SelectedIndex = 0;
+                break;
+
             case "units":
                 comboBox.Items.Clear();
                 comboBox.Items.AddRange(new object[] { "Ohm", "kOhm", "MOhm", "GOhm" });

@@ -1,7 +1,6 @@
 ﻿using ResistorInterpretor.Contracts;
 using ResistorInterpretor.Logic;
 using ResistorInterpretor.Services;
-using ResistorInterpretor.History;
 
 namespace ResistorInterpretor;
 
@@ -13,6 +12,7 @@ public partial class MainForm : Form, IMainFormUI
     private readonly IComboBoxManager comboBoxManageTempCoeff;
     private readonly IComboBoxManager comboBoxManageUnits;
     private readonly IComboBoxManager comboBoxManageBands;
+    private readonly IComboBoxManager comboBoxSorting;
     private readonly IComboBoxManager[] colorBandManagers;
 
     private readonly ILabelManager toleranceLabelManager;
@@ -27,6 +27,9 @@ public partial class MainForm : Form, IMainFormUI
     private readonly IValueToColorHistoryManager valueToColorHistoryManager;
     private readonly IValueToColorHistoryDisplay valueToColorHistoryDisplay;
     private readonly IHistoryRestoreManager historyRestoreManager;
+    private readonly IHistorySortManager historySortManager;
+
+    private readonly IClearHistoryManager clearHistoryManager;
 
     public string Value => inputValue.Text;
     public string Suffix => comboBoxUnits.SelectedItem?.ToString() ?? "Ohm";
@@ -41,6 +44,7 @@ public partial class MainForm : Form, IMainFormUI
         comboBoxManageTempCoeff = new ComboBoxManager(comboBoxTempCoeff);
         comboBoxManageUnits = new ComboBoxManager(comboBoxUnits);
         comboBoxManageBands = new ComboBoxManager(comboBoxBands);
+        comboBoxSorting = new ComboBoxManager(comboBoxSort);
         colorBandManagers = new IComboBoxManager[]
         {
             new ComboBoxManager(comboBox1),
@@ -90,7 +94,6 @@ public partial class MainForm : Form, IMainFormUI
             radioButtonManager,
             colorLogic);
 
-
         valueToColorHistoryManager = new ValueToColorHistoryManager();
 
         valueToColorHistoryDisplay = new ValueToColorHistoryDisplay(
@@ -98,10 +101,17 @@ public partial class MainForm : Form, IMainFormUI
             valueToColorHistoryManager,
             historyRestoreManager);
 
+        clearHistoryManager = new ClearHistoryManager(
+            valueToColorHistoryManager,
+            valueToColorHistoryDisplay);
+
+        historySortManager = new HistorySortManager();
+
         toleranceLabelManager.SetVisibility(false);
         tempCoeffLabelManager.SetVisibility(false);
 
         comboBoxManageUnits.PopulateComboBox("units");
+        comboBoxSorting.PopulateComboBox("sort");
 
         comboBoxManageBands.PopulateComboBox("bands");
         comboBoxBands.SelectedIndex = logic.previousBandCount - 3;
@@ -133,6 +143,19 @@ public partial class MainForm : Form, IMainFormUI
             logic.previousBandCount = bandCount;
         };
 
+        comboBoxSorting.ComboBox.SelectedIndexChanged += (_, _) =>
+        {
+            var sortKey = comboBoxSorting.ComboBox.SelectedItem?.ToString() ?? "All";
+            if (sortKey == "All")
+                valueToColorHistoryDisplay.RefreshDisplay();
+            else
+            {
+                var entries = valueToColorHistoryManager.GetAllEntries();
+                var sorted = historySortManager.Sort(entries, sortKey);
+                valueToColorHistoryDisplay.RefreshDisplay(sorted);
+            }
+        };
+
         logic.HistoryEntry += (sender, args) =>
         {
             valueToColorHistoryManager.SaveEntry(
@@ -141,7 +164,16 @@ public partial class MainForm : Form, IMainFormUI
                 args.BandCount,
                 args.ToleranceColor,
                 args.TempCoeffColor);
-            valueToColorHistoryDisplay.RefreshDisplay();
+            var sortKey = comboBoxSorting.ComboBox.SelectedItem?.ToString() ?? "All";
+            if (sortKey == "All")
+                valueToColorHistoryDisplay.RefreshDisplay();
+            else
+            {
+                var entries = valueToColorHistoryManager.GetAllEntries();
+                var sorted = historySortManager.Sort(entries, sortKey);
+                valueToColorHistoryDisplay.RefreshDisplay(sorted);
+            }
+
         };
 
     }
@@ -159,5 +191,10 @@ public partial class MainForm : Form, IMainFormUI
     private void button1_Click(object sender, EventArgs e)
     {
         logic.Convert();
+    }
+
+    private void buttonClearHistory_Click(object sender, EventArgs e)
+    {
+        clearHistoryManager.ClearHistory();
     }
 }
