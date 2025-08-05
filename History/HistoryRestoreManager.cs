@@ -93,8 +93,7 @@ namespace ResistorInterpretor.History
                 }
             }
 
-            // Perform the conversion
-            colorLogic.Convert();
+            colorLogic.Convert(suppressHistory: true);
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public interface IColorConverterLogic
     {
-        void Convert();
+        void Convert(bool suppressHistory);
         void UpdateBandComboBoxVisibility(int bandCount, int previousBandCount ,IComboBoxManager[] managers);
     }
 

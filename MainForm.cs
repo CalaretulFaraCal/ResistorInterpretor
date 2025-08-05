@@ -29,9 +29,12 @@ public partial class MainForm : Form, IMainFormUI
     private readonly IValueToColorHistoryManager valueToColorHistoryManager;
     private readonly IValueToColorHistoryDisplay valueToColorHistoryDisplay;
     private readonly IHistoryRestoreManager historyRestoreManager;
+    private readonly IColorToValueHistoryManager colorToValueHistoryManager;
+    private readonly IColorToValueHistoryDisplay colorToValueHistoryDisplay;
     private readonly ISortManager sortManager;
     private readonly IFilterManager filterManager;
 
+    private readonly IGenerateBandsManager generateBandsManager;
     private readonly IClearHistoryManager clearHistoryManager;
 
     public string Value => inputValue.Text;
@@ -42,6 +45,8 @@ public partial class MainForm : Form, IMainFormUI
         InitializeComponent();
 
         listManager = new ListManager(listViewVTC);
+
+        generateBandsManager = new GenerateBandsManager();
 
         comboBoxManageTolerance = new ComboBoxManager(comboBoxTolerance);
         comboBoxManageTempCoeff = new ComboBoxManager(comboBoxTempCoeff);
@@ -77,7 +82,7 @@ public partial class MainForm : Form, IMainFormUI
         toleranceLabelManager = new LabelManager(Tolerance);
         tempCoeffLabelManager = new LabelManager(TemperatureCoefficient);
 
-        logic = new ValueConverterLogic(this, listManager, comboBoxManageTolerance, comboBoxManageTempCoeff);
+        logic = new ValueConverterLogic(this, listManager, comboBoxManageTolerance, comboBoxManageTempCoeff, generateBandsManager);
         colorLogic = new ColorConverterLogic(comboBoxBands, colorBandManagers, labelResult, colorBandLabelManagers);
 
         radioButtonManager = new RadioButtonManager(
@@ -104,6 +109,14 @@ public partial class MainForm : Form, IMainFormUI
             listView1,
             valueToColorHistoryManager,
             historyRestoreManager);
+
+        colorToValueHistoryManager = new ColorToValueHistoryManager();
+        colorToValueHistoryDisplay = new ColorToValueHistoryDisplay(
+            listView2,
+            colorToValueHistoryManager,
+            historyRestoreManager,
+            generateBandsManager
+        );
 
         clearHistoryManager = new ClearHistoryManager(
             valueToColorHistoryManager,
@@ -169,6 +182,12 @@ public partial class MainForm : Form, IMainFormUI
                 args.ToleranceColor,
                 args.TempCoeffColor);
             ApplyFilterAndSort();
+        };
+
+        colorLogic.ConversionCompleted += (sender, args) =>
+        {
+            colorToValueHistoryManager.SaveEntry(args.BandCount, args.ColorBandNames);
+            colorToValueHistoryDisplay.RefreshDisplay();
         };
     }
 

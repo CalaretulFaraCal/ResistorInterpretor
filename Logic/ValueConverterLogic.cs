@@ -3,11 +3,11 @@ using System.Globalization;
 
 namespace ResistorInterpretor.Logic;
 
-public class ValueConverterLogic(IMainFormUI ui, IListManager listManager, IComboBoxManager comboBox1, IComboBoxManager comboBox2) : IValueConverterLogic
+public class ValueConverterLogic(IMainFormUI ui, IListManager listManager, IComboBoxManager comboBox1, IComboBoxManager comboBox2, IGenerateBandsManager generateBandsManager) : IValueConverterLogic
 {
     public int previousBandCount { get; set; } = 3;
     private bool suppressHistory = false;
-
+    private readonly IGenerateBandsManager _generateBandsManager = generateBandsManager;
     public event EventHandler<ValueConversionEventArgs> HistoryEntry;
 
     public void Convert(bool suppressHistory = false)
@@ -74,46 +74,17 @@ public class ValueConverterLogic(IMainFormUI ui, IListManager listManager, IComb
         }
 
         GenerateBands(significantDigits, multiplierIndex, bandCount);
-
     }
 
     private void GenerateBands(string significantDigits, int multiplierIndex, int bandCount)
     {
         listManager.Clear();
+        string? toleranceColor = comboBox1.GetSelectedColor("tolerance", null);
+        string? tempCoeffColor = comboBox2.GetSelectedColor("temperatureCoefficient", null);
 
-        // Add significant digit bands
-        foreach (var c in significantDigits)
-        {
-            var digit = c - '0';
-            var colorInfo = ResistorColorInfo.AllColors.FirstOrDefault(ci => ci.Digit == digit);
-            if (colorInfo != null)
-                listManager.AddBand(colorInfo.Color, colorInfo.Name);
-        }
-
-        // Add multiplier band
-        if (multiplierIndex >= 0 && multiplierIndex < 12)
-        {
-            var multiplierColor = ResistorColorInfo.AllColors[multiplierIndex];
-            listManager.AddBand(multiplierColor.Color, multiplierColor.Name);
-        }
-
-        // Add tolerance band 
-        if (bandCount > 3)
-        {
-            var colorName = comboBox1.GetSelectedColor("tolerance", "Brown");
-            var colorInfo = ResistorColorInfo.AllColors.FirstOrDefault(c => c.Name == colorName);
-            if (colorInfo?.Tolerance.HasValue == true)
-                listManager.AddBand(colorInfo.Color, $"{colorName} (±{colorInfo.Tolerance}%)");
-        }
-
-        // Add temperature coefficient band
-        if (bandCount == 6)
-        {
-            var colorName = comboBox2.GetSelectedColor("temperatureCoefficient", "Brown");
-            var colorInfo = ResistorColorInfo.AllColors.FirstOrDefault(c => c.Name == colorName);
-            if (colorInfo?.TemperatureCoefficient.HasValue == true)
-                listManager.AddBand(colorInfo.Color, $"{colorName} ({colorInfo.TemperatureCoefficient}ppm/K)");
-        }
+        var bands = _generateBandsManager.FromValue(significantDigits, multiplierIndex, bandCount, toleranceColor, tempCoeffColor);
+        foreach (var (color, label) in bands)
+            listManager.AddBand(color, label);
     }
 
     public void UpdateToleranceVisibility(int bandCount)

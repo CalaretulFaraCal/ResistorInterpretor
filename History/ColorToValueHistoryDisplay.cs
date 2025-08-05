@@ -7,16 +7,17 @@ namespace ResistorInterpretor.History
         private readonly ListView _listView;
         private readonly IColorToValueHistoryManager _historyManager;
         private readonly IHistoryRestoreManager _restoreManager;
+        private readonly IGenerateBandsManager _generateBandsManager;
 
         public event EventHandler<ColorToValueHistoryEntry>? EntrySelected;
 
-        public ColorToValueHistoryDisplay(ListView listView,
-            IColorToValueHistoryManager historyManager,
-            IHistoryRestoreManager restoreManager)
+        public ColorToValueHistoryDisplay(ListView listView, IColorToValueHistoryManager historyManager, IHistoryRestoreManager restoreManager, IGenerateBandsManager generateBandsManager)
         {
             _listView = listView;
             _historyManager = historyManager;
             _restoreManager = restoreManager;
+            _generateBandsManager = generateBandsManager;
+
             InitializeListView();
         }
 
@@ -54,11 +55,20 @@ namespace ResistorInterpretor.History
             foreach (var entry in _historyManager.GetRecentEntries(30))
             {
                 var item = new ListViewItem(entry.Timestamp.ToString("HH:mm"));
-                item.SubItems.Add(entry.DisplayColors);
+
+                var bands = _generateBandsManager.FromColorNames(entry.ColorBandNames, entry.BandCount);
+
+                item.SubItems.Add(string.Join(" → ", bands.Select(b => b.Label)));
                 item.SubItems.Add(entry.DisplaySettings);
                 item.Tag = entry;
                 item.ToolTipText = "Double-click to restore settings and calculate";
                 _listView.Items.Add(item);
+
+                if (bands.Count > 0)
+                {
+                    item.SubItems[1].BackColor = bands[0].Color;
+                    item.SubItems[1].ForeColor = UI.GetTextColor(bands[0].Color);
+                }
             }
 
             _listView.EndUpdate();

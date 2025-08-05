@@ -3,8 +3,9 @@ namespace ResistorInterpretor.Logic
 {
     public class ColorConverterLogic(ComboBox bandSelector, IComboBoxManager[] colorManagers, Label resultLabel, ILabelManager[] labelManager) : IColorConverterLogic
     {
+
         public event EventHandler<ColorConversionEventArgs> ConversionCompleted;
-        public void Convert()
+        public void Convert(bool suppressHistory = false)
         {
             int bandCount = bandSelector.SelectedIndex + 3;
 
@@ -50,7 +51,8 @@ namespace ResistorInterpretor.Logic
             string result = FormatResult(value, tolerance, tempCoeff);
             resultLabel.Text = "Resistance: " + result;
 
-
+            if(!suppressHistory)
+                ConversionCompleted?.Invoke(this, new ColorConversionEventArgs(bandCount, selectedColors.Take(bandCount).ToList()));
         }
 
         private string FormatWithSuffix(double value)
