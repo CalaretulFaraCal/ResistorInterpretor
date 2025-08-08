@@ -23,5 +23,21 @@ namespace ResistorInterpretor.Services
 
             return entries;
         }
+        public IEnumerable<ColorToValueHistoryEntry> ApplyFilter(IEnumerable<ColorToValueHistoryEntry> entries)
+        {
+            if (string.IsNullOrEmpty(CurrentFilterValue) || CurrentFilterValue == "None")
+                return entries;
+
+            if (CurrentFilterValue.EndsWith("bands"))
+            {
+                var bandCount = int.Parse(CurrentFilterValue[0].ToString());
+                return entries.Where(e => e.BandCount == bandCount);
+            }
+
+            // Filter by color presence
+            // (Colors are stored as names in ColorBandNames)
+            var colorName = CurrentFilterValue;
+            return entries.Where(e => e.ColorBandNames.Any(band => band == colorName));
+        }
     }
 }

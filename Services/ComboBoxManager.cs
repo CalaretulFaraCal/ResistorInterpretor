@@ -32,6 +32,18 @@ public class ComboBoxManager(ComboBox comboBox) : IComboBoxManager
 
         switch (propertyType)
         {
+            case "filterCTV":
+                comboBox.Items.Clear();
+                comboBox.Items.AddRange(new object[] { "None", "3 bands", "4 bands", "5 bands", "6 bands", "Black", "Brown", "Red", "Orange", "Yellow", "Green", "Blue", "Violet", "Gray", "White", "Gold", "Silver" });
+                comboBox.SelectedIndex = 0;
+                break;
+
+            case "sortCTV":
+                comboBox.Items.Clear();
+                comboBox.Items.AddRange(new object[] { "All" ,"Band Count", "Color 1", "Color 2", "Color 3", "Color 4", "Color 5", "Color 6", "Time" });
+                comboBox.SelectedIndex = 0; 
+                break;
+
             case "filterVTC":
                 comboBox.Items.Clear();
                 comboBox.Items.AddRange(new object[] { "None", "Ohm", "kOhm", "MOhm", "GOhm", "3 bands", "4 bands", "5 bands", "6 bands" });

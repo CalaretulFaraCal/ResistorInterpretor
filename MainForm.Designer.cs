@@ -51,6 +51,11 @@
             TemperatureCoefficient = new Label();
             Tolerance = new Label();
             tabPage2 = new TabPage();
+            comboBoxFilterCTV = new ComboBox();
+            label12 = new Label();
+            label13 = new Label();
+            comboBoxSortCTV = new ComboBox();
+            button3 = new Button();
             label11 = new Label();
             listView2 = new ListView();
             button2 = new Button();
@@ -298,6 +303,11 @@
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(comboBoxFilterCTV);
+            tabPage2.Controls.Add(label12);
+            tabPage2.Controls.Add(label13);
+            tabPage2.Controls.Add(comboBoxSortCTV);
+            tabPage2.Controls.Add(button3);
             tabPage2.Controls.Add(label11);
             tabPage2.Controls.Add(listView2);
             tabPage2.Controls.Add(button2);
@@ -322,6 +332,50 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Color to Value";
             tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxFilterCTV
+            // 
+            comboBoxFilterCTV.FormattingEnabled = true;
+            comboBoxFilterCTV.Location = new Point(674, 323);
+            comboBoxFilterCTV.Name = "comboBoxFilterCTV";
+            comboBoxFilterCTV.Size = new Size(121, 23);
+            comboBoxFilterCTV.TabIndex = 29;
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new Point(698, 298);
+            label12.Name = "label12";
+            label12.Size = new Size(74, 15);
+            label12.TabIndex = 28;
+            label12.Text = "Filter History";
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new Point(538, 298);
+            label13.Name = "label13";
+            label13.Size = new Size(69, 15);
+            label13.TabIndex = 27;
+            label13.Text = "Sort History";
+            // 
+            // comboBoxSortCTV
+            // 
+            comboBoxSortCTV.FormattingEnabled = true;
+            comboBoxSortCTV.Location = new Point(514, 323);
+            comboBoxSortCTV.Name = "comboBoxSortCTV";
+            comboBoxSortCTV.Size = new Size(121, 23);
+            comboBoxSortCTV.TabIndex = 26;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(525, 243);
+            button3.Name = "button3";
+            button3.Size = new Size(75, 23);
+            button3.TabIndex = 25;
+            button3.Text = "Clear";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // label11
             // 
@@ -527,5 +581,10 @@
         private Label label7;
         private Label label11;
         private ListView listView2;
+        private Button button3;
+        private ComboBox comboBoxFilterCTV;
+        private Label label12;
+        private Label label13;
+        private ComboBox comboBoxSortCTV;
     }
 }

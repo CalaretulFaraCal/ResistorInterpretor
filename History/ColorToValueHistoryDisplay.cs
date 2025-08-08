@@ -1,4 +1,5 @@
-﻿using ResistorInterpretor.Contracts;
+﻿using System.Diagnostics;
+using ResistorInterpretor.Contracts;
 
 namespace ResistorInterpretor.History
 {
@@ -30,7 +31,7 @@ namespace ResistorInterpretor.History
 
             _listView.Columns.Clear();
             _listView.Columns.Add("Time", 70);
-            _listView.Columns.Add("Colors", 200);
+            _listView.Columns.Add("Colors", 294);
             _listView.Columns.Add("Settings", 100);
 
             _listView.DoubleClick += ListView_DoubleClick;
@@ -55,8 +56,36 @@ namespace ResistorInterpretor.History
             foreach (var entry in _historyManager.GetRecentEntries(30))
             {
                 var item = new ListViewItem(entry.Timestamp.ToString("HH:mm"));
+                Debug.WriteLine($"Raw bands: {string.Join(", ", entry.ColorBandNames.Take(entry.BandCount))}");
+                // Only use the real bands up to BandCount for display
+                var bands = _generateBandsManager.FromColorNames(entry.ColorBandNames.Take(entry.BandCount).ToList(), entry.BandCount);
 
-                var bands = _generateBandsManager.FromColorNames(entry.ColorBandNames, entry.BandCount);
+                item.SubItems.Add(string.Join(" → ", bands.Select(b => b.Label)));
+                item.SubItems.Add(entry.DisplaySettings);
+                item.Tag = entry;
+                item.ToolTipText = "Double-click to restore settings and calculate";
+                _listView.Items.Add(item);
+
+                if (bands.Count > 0)
+                {
+                    item.SubItems[1].BackColor = bands[0].Color;
+                    item.SubItems[1].ForeColor = UI.GetTextColor(bands[0].Color);
+                }
+            }
+
+            _listView.EndUpdate();
+        }
+        public void RefreshDisplay(IEnumerable<ColorToValueHistoryEntry> entries)
+        {
+            _listView.BeginUpdate();
+            _listView.Items.Clear();
+
+            foreach (var entry in entries)
+            {
+                var item = new ListViewItem(entry.Timestamp.ToString("HH:mm"));
+
+                // Only use the real bands up to BandCount for display
+                var bands = _generateBandsManager.FromColorNames(entry.ColorBandNames.Take(entry.BandCount).ToList(), entry.BandCount);
 
                 item.SubItems.Add(string.Join(" → ", bands.Select(b => b.Label)));
                 item.SubItems.Add(entry.DisplaySettings);

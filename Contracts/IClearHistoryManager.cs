@@ -2,6 +2,7 @@
 {
     public interface IClearHistoryManager
     {
-        void ClearHistory();
+        void ClearHistoryVTC();
+        void ClearHistoryCTV();
     }
 }

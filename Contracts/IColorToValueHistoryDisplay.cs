@@ -6,6 +6,7 @@ namespace ResistorInterpretor.Contracts
     {
         void RefreshDisplay();
         void ClearDisplay();
+        void RefreshDisplay(IEnumerable<ColorToValueHistoryEntry> entries);
         event EventHandler<ColorToValueHistoryEntry>? EntrySelected;
     }
 }

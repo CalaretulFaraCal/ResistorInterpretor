@@ -28,18 +28,18 @@ namespace ResistorInterpretor.Logic
             double? tolerance = null;
             int? tempCoeff = null;
 
-            if (bandCount == 3 || bandCount == 4)
+            if (bandCount < 5)
             {
                 digits = (colors[0]?.Digit ?? 0) * 10 +
                          (colors[1]?.Digit ?? 0);
             }
-            else if (bandCount == 5 || bandCount == 6)
+            else
             {
                 digits = (colors[0]?.Digit ?? 0) * 100 +
                          (colors[1]?.Digit ?? 0) * 10 +
                          (colors[2]?.Digit ?? 0);
-                tolerance = colors[4]?.Tolerance;
             }
+
             multiplier = Math.Pow(10, colors[3]?.MultiplierExponent ?? 0);
 
             if (bandCount >= 4)
@@ -51,8 +51,56 @@ namespace ResistorInterpretor.Logic
             string result = FormatResult(value, tolerance, tempCoeff);
             resultLabel.Text = "Resistance: " + result;
 
-            if(!suppressHistory)
-                ConversionCompleted?.Invoke(this, new ColorConversionEventArgs(bandCount, selectedColors.Take(bandCount).ToList()));
+            var bandNamesToSave = GetBandNamesToSave(bandCount, selectedColors);
+
+            if (!suppressHistory)
+                ConversionCompleted?.Invoke(this, new ColorConversionEventArgs(bandCount, bandNamesToSave));
+        }
+
+        private List<string> GetBandNamesToSave(int bandCount, string[] selectedColors)
+        {
+            if (bandCount == 3)
+            {
+                return new List<string>
+                {
+                    selectedColors[0],
+                    selectedColors[1],
+                    selectedColors[3]
+                };
+            }
+            else if (bandCount == 4)
+            {
+                return new List<string>
+                {
+                    selectedColors[0],
+                    selectedColors[1],
+                    selectedColors[3],
+                    selectedColors[4]
+                };
+            }
+            else if (bandCount == 5)
+            {
+                return new List<string>
+                {
+                    selectedColors[0],
+                    selectedColors[1],
+                    selectedColors[2],
+                    selectedColors[3],
+                    selectedColors[4]
+                };
+            }
+            else // bandCount == 6
+            {
+                return new List<string>
+                {
+                    selectedColors[0],
+                    selectedColors[1],
+                    selectedColors[2],
+                    selectedColors[3],
+                    selectedColors[4],
+                    selectedColors[5]
+                };
+            }
         }
 
         private string FormatWithSuffix(double value)
@@ -65,7 +113,6 @@ namespace ResistorInterpretor.Logic
                 return $"{value / 1_000:0.##}kOhm";
             return $"{value:0.##} Ohm";
         }
-
 
         private string FormatResult(double value, double? tolerance, int? tempCoeff)
         {

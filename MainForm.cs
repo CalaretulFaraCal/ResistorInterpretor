@@ -53,7 +53,10 @@ public partial class MainForm : Form, IMainFormUI
         comboBoxManageUnits = new ComboBoxManager(comboBoxUnits);
         comboBoxManageBands = new ComboBoxManager(comboBoxBands);
         comboBoxSorting = new ComboBoxManager(comboBoxSort);
+        comboBoxSorting = new ComboBoxManager(comboBoxSortCTV);
         comboBoxFiltering = new ComboBoxManager(comboBoxFilter);
+        comboBoxFiltering = new ComboBoxManager(comboBoxFilterCTV);
+
         colorBandManagers = new IComboBoxManager[]
         {
             new ComboBoxManager(comboBox1),
@@ -120,7 +123,9 @@ public partial class MainForm : Form, IMainFormUI
 
         clearHistoryManager = new ClearHistoryManager(
             valueToColorHistoryManager,
-            valueToColorHistoryDisplay);
+            colorToValueHistoryManager,
+            valueToColorHistoryDisplay,
+            colorToValueHistoryDisplay);
 
         sortManager = new SortManager();
         filterManager = new FilterManager();
@@ -130,7 +135,9 @@ public partial class MainForm : Form, IMainFormUI
 
         comboBoxManageUnits.PopulateComboBox("units");
         comboBoxSorting.PopulateComboBox("sortVTC");
+        comboBoxSorting.PopulateComboBox("sortCTV");
         comboBoxFiltering.PopulateComboBox("filterVTC");
+        comboBoxFiltering.PopulateComboBox("filterCTV");
 
         comboBoxManageBands.PopulateComboBox("bands");
         comboBoxBands.SelectedIndex = logic.previousBandCount - 3;
@@ -173,6 +180,17 @@ public partial class MainForm : Form, IMainFormUI
             ApplyFilterAndSort();
         };
 
+        comboBoxSortCTV.SelectedIndexChanged += (_, _) =>
+        {
+            ApplyFilterAndSortColorToValue();
+        };
+
+        comboBoxFilterCTV.SelectedIndexChanged += (s, e) =>
+        {
+            filterManager.CurrentFilterValue = comboBoxFilterCTV.SelectedItem?.ToString() ?? "None";
+            ApplyFilterAndSortColorToValue();
+        };
+
         logic.HistoryEntry += (sender, args) =>
         {
             valueToColorHistoryManager.SaveEntry(
@@ -208,14 +226,29 @@ public partial class MainForm : Form, IMainFormUI
 
     private void buttonClearHistory_Click(object sender, EventArgs e)
     {
-        clearHistoryManager.ClearHistory();
+        clearHistoryManager.ClearHistoryVTC();
     }
+
+    private void button3_Click(object sender, EventArgs e)
+    {
+        clearHistoryManager.ClearHistoryCTV();
+    }
+
     private void ApplyFilterAndSort()
     {
         var allEntries = valueToColorHistoryManager.GetAllEntries();
         var filtered = filterManager.ApplyFilter(allEntries);
         var sortKey = comboBoxSorting.ComboBox.SelectedItem?.ToString() ?? "All";
-        var sorted = sortKey == "All" ? filtered : sortManager.Sort(filtered, sortKey);
+        var sorted = sortKey == "All" ? filtered : sortManager.SortVTC(filtered, sortKey);
         valueToColorHistoryDisplay.RefreshDisplay(sorted);
+    }
+
+    private void ApplyFilterAndSortColorToValue()
+    {
+        var allEntries = colorToValueHistoryManager.GetAllEntries();
+        var filtered = filterManager.ApplyFilter(allEntries);
+        var sortKey = comboBoxSortCTV.SelectedItem?.ToString() ?? "All";
+        var sorted = sortKey == "All" ? filtered : sortManager.SortCTV(filtered, sortKey);
+        colorToValueHistoryDisplay.RefreshDisplay(sorted);
     }
 }

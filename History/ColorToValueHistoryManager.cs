@@ -55,7 +55,7 @@ namespace ResistorInterpretor.History
             SaveEntries();
         }
 
-        public IEnumerable<ColorToValueHistoryEntry> GetRecentEntries(int count = 20)
+        public IEnumerable<ColorToValueHistoryEntry> GetRecentEntries(int count)
         {
             return _entries.OrderByDescending(e => e.Timestamp).Take(count);
         }

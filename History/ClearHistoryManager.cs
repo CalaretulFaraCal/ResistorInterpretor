@@ -1,22 +1,36 @@
 ﻿using ResistorInterpretor.Contracts;
 
-namespace ResistorInterpretor.History
+namespace ResistorInterpretor.Services
 {
     public class ClearHistoryManager : IClearHistoryManager
     {
-        private readonly IValueToColorHistoryManager historyManager;
-        private readonly IValueToColorHistoryDisplay historyDisplay;
+        private readonly IValueToColorHistoryManager historyManagerVTC;
+        private readonly IColorToValueHistoryManager historyManagerCTV;
+        private readonly IValueToColorHistoryDisplay historyDisplayVTC;
+        private readonly IColorToValueHistoryDisplay historyDisplayCTV;
 
-        public ClearHistoryManager(IValueToColorHistoryManager historyManager, IValueToColorHistoryDisplay historyDisplay)
+        public ClearHistoryManager(
+            IValueToColorHistoryManager historyManagerVTC,
+            IColorToValueHistoryManager historyManagerCTV,
+            IValueToColorHistoryDisplay historyDisplayVTC,
+            IColorToValueHistoryDisplay historyDisplayCTV)
         {
-            this.historyManager = historyManager;
-            this.historyDisplay = historyDisplay;
+            this.historyManagerVTC = historyManagerVTC;
+            this.historyManagerCTV = historyManagerCTV;
+            this.historyDisplayVTC = historyDisplayVTC;
+            this.historyDisplayCTV = historyDisplayCTV;
         }
 
-        public void ClearHistory()
+        public void ClearHistoryVTC()
         {
-            historyManager.ClearHistory();
-            historyDisplay.RefreshDisplay();
+            historyManagerVTC.ClearHistory();
+            historyDisplayVTC.RefreshDisplay();
+        }
+
+        public void ClearHistoryCTV()
+        {
+            historyManagerCTV.ClearHistory();
+            historyDisplayCTV.RefreshDisplay();
         }
     }
 }
